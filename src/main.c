@@ -1,7 +1,9 @@
-#include <stdio.h>
+#include <stdlib.h>
 #include "header.h"
 
 int main(){
-	printf("Hello World\n");
+	CPU *cpu = malloc(sizeof(CPU));
+	Memory *mem = malloc(sizeof(Memory));
+	reset(cpu, mem);
 	return 0;
 }
