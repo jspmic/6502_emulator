@@ -31,6 +31,19 @@ typedef struct{
 	Byte N: 1;	// Negative flag
 }__attribute__((packed)) CPU;
 
+// Opcodes
+enum{
+	INS_LDY_IM = 0xA0,
+	INS_LDX_IM = 0xA2,
+	INS_LDA_IM = 0xA9,
+};
+
+// Cycles
+enum{
+	CCL_LD_IM = 2,		// Cycle for the LD<...> immediate mode
+};
+
 extern void reset(CPU* cpu, Memory* mem);
+extern void execute(CPU* cpu, Memory* mem, u32 cycles);
 
 #endif
