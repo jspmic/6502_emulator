@@ -8,7 +8,7 @@ typedef unsigned short Word;
 typedef unsigned int u32;
 
 typedef struct{
-	Byte data[MEM];
+	Word data[MEM];
 } Memory;
 
 typedef struct{
@@ -31,16 +31,25 @@ typedef struct{
 	Byte N: 1;	// Negative flag
 }__attribute__((packed)) CPU;
 
-// Opcodes
-enum{
-	INS_LDY_IM = 0xA0,
-	INS_LDX_IM = 0xA2,
-	INS_LDA_IM = 0xA9,
+enum OPCODES{
+	INS_LDY_IM		= 0xA0,
+
+	INS_LDX_IM		= 0xA2,
+
+	INS_LDA_IM		= 0xA9,		// LDA Immediate
+	INS_LDA_ZP		= 0xA5,		// LDA Zero Page
+	INS_LDA_ZPX		= 0xB5,		// LDA Zero Page indeXed
+	INS_LDA_AB		= 0xAD,		// LDA Absolute
+	INS_LDA_ABX		= 0xBD,		// LDA Absolute indeXed
+	INS_LDA_ABY		= 0xB9,		// LDA Absolute Y
+	INS_LDA_IDX		= 0xA1,		// LDA Indirect indeXed
+	INS_LDA_IDY		= 0xB1,		// LDA Indirect Y
 };
 
-// Cycles
-enum{
-	CCL_LD_IM = 2,		// Cycle for the LD<...> immediate mode
+enum CYCLES{
+	CCL_LD_IM 		= 2,		// Cycle for the LD<...> immediate mode
+	CCL_LD_ZP 		= 3,		// Cycle for the LD<...> Zero Page mode
+	CCL_LD_ZPX		= 4,		// Cycle for the LD<...> Zero Page indeXed mode
 };
 
 extern void reset(CPU* cpu, Memory* mem);
