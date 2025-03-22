@@ -29,7 +29,7 @@ typedef struct{
 	Byte B: 1;	// Break command flag
 	Byte O: 1;	// Overflow flag
 	Byte N: 1;	// Negative flag
-} CPU;
+}__attribute__((packed)) CPU;
 
 extern void reset(CPU* cpu, Memory* mem);
 
