@@ -22,6 +22,27 @@ Byte fetch(u32 *cycles, CPU* cpu, Memory* mem){
 	return data;
 }
 
+Word fetch_word(u32 *cycles, CPU* cpu, Memory* mem){
+	// 6502: little endian
+	Word data = mem->data[cpu->pc];
+	if ((cpu->pc)+1 < MEM)
+		cpu->pc++;
+
+	data |= ((mem->data[cpu->pc]) << 8);
+
+	if ((cpu->pc)+1 < MEM)
+		cpu->pc++;
+
+	(*cycles)-=2;
+	return data;
+}
+
+void write_word(Word value, u32 addr, u32 *cycles, Memory* mem){
+	mem->data[addr] = value & 0xFF;
+	mem->data[++addr] = value >> 8;
+	(*cycles)-=2;
+}
+
 Byte read_without_pc(u32 *cycles, Byte address, Memory* mem){
 	Byte data = mem->data[address];
 
@@ -38,6 +59,7 @@ void execute(CPU* cpu, Memory* mem, u32 cycles){
 	for (;cycles > 0;){
 		Byte instruction = fetch(&cycles, cpu, mem);
 		Byte operand, addr_value;
+		Word operandW;
 		switch (instruction){
 			case INS_LDA_IM:
 				operand = fetch(&cycles, cpu, mem);
@@ -72,6 +94,14 @@ void execute(CPU* cpu, Memory* mem, u32 cycles){
 				addr_value = read_without_pc(&cycles, operand, mem);
 				cpu->a = addr_value;
 				LDSet(cpu);
+				break;
+			case INS_JSR:
+				operandW = fetch_word(&cycles, cpu, mem); // Subroutine address
+
+				write_word(--(cpu->pc), cpu->sp, &cycles, mem);
+				cpu->sp++;
+				cpu->pc = operandW;
+				cycles--;
 				break;
 			default:
 				printf("Unexceptional case not handled: %d\n", instruction);

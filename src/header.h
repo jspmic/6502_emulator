@@ -29,7 +29,7 @@ typedef struct{
 	Byte B: 1;	// Break command flag
 	Byte O: 1;	// Overflow flag
 	Byte N: 1;	// Negative flag
-}__attribute__((packed)) CPU;
+} CPU;
 
 enum OPCODES{
 	INS_LDY_IM		= 0xA0,
@@ -44,12 +44,15 @@ enum OPCODES{
 	INS_LDA_ABY		= 0xB9,		// LDA Absolute Y
 	INS_LDA_IDX		= 0xA1,		// LDA Indirect indeXed
 	INS_LDA_IDY		= 0xB1,		// LDA Indirect Y
+
+	INS_JSR			= 0x20,		// JSR
 };
 
 enum CYCLES{
-	CCL_LD_IM 		= 2,		// Cycle for the LD<...> immediate mode
-	CCL_LD_ZP 		= 3,		// Cycle for the LD<...> Zero Page mode
-	CCL_LD_ZPX		= 4,		// Cycle for the LD<...> Zero Page indeXed mode
+	CCL_LD_IM 		= 2,		// Cycle for the LD<...> immediate mode instruction
+	CCL_LD_ZP 		= 3,		// Cycle for the LD<...> Zero Page mode instruction
+	CCL_LD_ZPX		= 4,		// Cycle for the LD<...> Zero Page indeXed mode instruction
+	CCL_JSR			= 6,		// Cycle for the JSR instruction
 };
 
 extern void reset(CPU* cpu, Memory* mem);
