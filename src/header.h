@@ -58,6 +58,7 @@ enum CYCLES{
 extern void reset(CPU* cpu, Memory* mem);
 extern void execute(CPU* cpu, Memory* mem, u32 cycles);
 extern void fn_lda_im(Byte value, CPU* cpu, Memory* mem);
+extern void free_resource(CPU* cpu, Memory* mem);
 /* extern void fn_lda_zp(Byte addr, CPU* cpu, Memory* mem); */
 
 #endif
