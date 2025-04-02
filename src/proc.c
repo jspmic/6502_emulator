@@ -1,7 +1,19 @@
 #include <memory.h>
 #include <assert.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include "header.h"
+
+void free_resource(CPU* cpu, Memory* mem){
+	free(cpu);
+	free(mem);
+}
+
+void fn_lda_im(Byte value, CPU* cpu, Memory* mem){
+	mem->data[cpu->pc] = INS_LDA_IM;
+	mem->data[(cpu->pc)+1] = value;
+	execute(cpu, mem, CCL_LD_IM);
+}
 
 /* Resets the CPU and Memory according to 6502 indications */
 void reset(CPU* cpu, Memory* mem){
