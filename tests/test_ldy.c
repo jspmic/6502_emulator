@@ -19,7 +19,7 @@ START_TEST (test_fn_ldy_im)
 	ck_assert((cpu->Z)==0x0);
 	ck_assert((cpu->N)==0x0);
 
-	free_resource(cpu, mem);
+	free_resource(&cpu, &mem);
 }
 END_TEST
 START_TEST (test_fn_ldy_im_2)
@@ -38,7 +38,7 @@ START_TEST (test_fn_ldy_im_2)
 	ck_assert((cpu->Z)==0x0);
 	ck_assert((cpu->N)==0x1);
 
-	free_resource(cpu, mem);
+	free_resource(&cpu, &mem);
 }
 END_TEST
 
