@@ -55,7 +55,8 @@ enum CYCLES{
 	CCL_JSR			= 6,		// Cycle for the JSR instruction
 };
 
-extern void reset(CPU* cpu, Memory* mem);
-extern void execute(CPU* cpu, Memory* mem, u32 cycles);
+void reset(CPU* cpu, Memory* mem);
+void execute(CPU* cpu, Memory* mem, u32 cycles);
+void free_resource(CPU** cpu, Memory** mem);
 
 #endif

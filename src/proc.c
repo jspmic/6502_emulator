@@ -1,7 +1,15 @@
 #include <memory.h>
 #include <assert.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include "header.h"
+
+void free_resource(CPU** cpu, Memory** mem){
+	free(*cpu);
+	free(*mem);
+	*cpu = NULL;
+	*mem = NULL;
+}
 
 /* Resets the CPU and Memory according to 6502 indications */
 void reset(CPU* cpu, Memory* mem){
