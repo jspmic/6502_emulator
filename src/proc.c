@@ -1,6 +1,5 @@
 #include <memory.h>
 #include <assert.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include "header.h"
 
@@ -20,7 +19,8 @@ void reset(CPU* cpu, Memory* mem){
 	memset(mem->data, 0, sizeof(mem->data));
 }
 
-Byte fetch(u32 *cycles, CPU* cpu, Memory* mem){
+/* Reads from the program counter and returns a Byte value */
+Byte fetch_byte(u32 *cycles, CPU* cpu, Memory* mem){
 	Byte data = mem->data[cpu->pc];
 
 	if ((cpu->pc)+1 < MEM)
@@ -30,6 +30,7 @@ Byte fetch(u32 *cycles, CPU* cpu, Memory* mem){
 	return data;
 }
 
+/* Reads from the program counter and returns a Word value */
 Word fetch_word(u32 *cycles, CPU* cpu, Memory* mem){
 	// 6502: little endian
 	Word data = mem->data[cpu->pc];
@@ -51,7 +52,7 @@ void write_word(Word value, u32 addr, u32 *cycles, Memory* mem){
 	(*cycles)-=2;
 }
 
-Byte read_without_pc(u32 *cycles, Byte address, Memory* mem){
+Byte read_without_pc(u32 *cycles, Word address, Memory* mem){
 	Byte data = mem->data[address];
 
 	(*cycles)--;
@@ -65,55 +66,7 @@ void LDSet(CPU* cpu){
 
 void execute(CPU* cpu, Memory* mem, u32 cycles){
 	for (;cycles > 0;){
-		Byte instruction = fetch(&cycles, cpu, mem);
-		Byte operand, addr_value;
-		Word operandW;
-		switch (instruction){
-			case INS_LDA_IM:
-				operand = fetch(&cycles, cpu, mem);
-				cpu->a = operand;
-				LDSet(cpu);
-				break;
-			case INS_LDX_IM:
-				operand = fetch(&cycles, cpu, mem);
-				cpu->x = operand;
-				cpu->Z = (cpu->x) == 0;
-				cpu->N = ((cpu->x) & 0b01000000) > 0;
-				break;
-			case INS_LDY_IM:
-				operand = fetch(&cycles, cpu, mem);
-				cpu->y = operand;
-				cpu->Z = (cpu->y) == 0;
-				cpu->N = ((cpu->y) & 0b01000000) > 0;
-				break;
-			case INS_LDA_ZP:
-				operand = fetch(&cycles, cpu, mem); // Zero Page address
-				addr_value = read_without_pc(&cycles, operand, mem);
-				cpu->a = addr_value;
-				LDSet(cpu);
-				break;
-			case INS_LDA_ZPX:
-				operand = fetch(&cycles, cpu, mem); // Zero Page address
-
-				// If the sum exceeds 1 byte, it will truncate it
-				operand += (cpu->x);
-				cycles--;
-
-				addr_value = read_without_pc(&cycles, operand, mem);
-				cpu->a = addr_value;
-				LDSet(cpu);
-				break;
-			case INS_JSR:
-				operandW = fetch_word(&cycles, cpu, mem); // Subroutine address
-
-				write_word(--(cpu->pc), cpu->sp, &cycles, mem);
-				cpu->sp++;
-				cpu->pc = operandW;
-				cycles--;
-				break;
-			default:
-				printf("Unexceptional case not handled: %d\n", instruction);
-				break;
-		}
+		Byte instruction = fetch_byte(&cycles, cpu, mem);
+		execute_instruction(instruction, &cycles, cpu, mem);
 	}
 }

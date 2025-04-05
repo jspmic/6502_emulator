@@ -51,7 +51,6 @@ START_TEST (test_fn_lda_zp)
 	Memory* mem = malloc(sizeof(Memory));
 	reset(cpu, mem);
 
-	// Second execution with cpu->N == 1
 	mem->data[cpu->pc] = INS_LDA_ZP;
 	mem->data[(cpu->pc)+1] = addr;
 	mem->data[addr] = value;
@@ -73,7 +72,6 @@ START_TEST (test_fn_lda_zpx)
 	Memory* mem = malloc(sizeof(Memory));
 	reset(cpu, mem);
 
-	// Second execution with cpu->N == 1
 	mem->data[cpu->pc] = INS_LDA_ZPX;
 	mem->data[(cpu->pc)+1] = addr;
 	cpu->x = offset;
@@ -88,7 +86,51 @@ START_TEST (test_fn_lda_zpx)
 }
 END_TEST
 
+START_TEST (test_fn_lda_ab)
+{
+	Word addr = 0xDFF4;
+	Byte value = 0xDE;
+	CPU* cpu = malloc(sizeof(CPU));
+	Memory* mem = malloc(sizeof(Memory));
+	reset(cpu, mem);
+
+	mem->data[cpu->pc] = INS_LDA_AB;
+	mem->data[(cpu->pc)+1] = addr;
+	mem->data[addr] = value;
+
+	execute(cpu, mem, CCL_LD_AB);
+	ck_assert((cpu->a)==value);
+	ck_assert((cpu->Z)==0x0);
+	ck_assert((cpu->N)==0x1);
+
+	free_resource(&cpu, &mem);
+}
+END_TEST
+
+START_TEST (test_fn_lda_abx)
+{
+	Word addr = 0xDFF4, offset = 0x0005;
+	Byte value = 0xDE;
+	CPU* cpu = malloc(sizeof(CPU));
+	Memory* mem = malloc(sizeof(Memory));
+	reset(cpu, mem);
+
+	cpu->x = offset;
+	mem->data[cpu->pc] = INS_LDA_ABX;
+	mem->data[(cpu->pc)+1] = addr;
+	mem->data[addr+offset] = value;
+
+	execute(cpu, mem, CCL_LD_ABX);
+	ck_assert((cpu->a)==value);
+	ck_assert((cpu->Z)==0x0);
+	ck_assert((cpu->N)==0x1);
+
+	free_resource(&cpu, &mem);
+}
+END_TEST
+
 Suite* fn_lda_suite (void){
+	init();
 	Suite* s;
 	TCase *tc_core;
 	s = suite_create("fn_LDA");
@@ -97,6 +139,8 @@ Suite* fn_lda_suite (void){
 	tcase_add_test(tc_core, test_fn_lda_im_2);
 	tcase_add_test(tc_core, test_fn_lda_zp);
 	tcase_add_test(tc_core, test_fn_lda_zpx);
+	tcase_add_test(tc_core, test_fn_lda_ab);
+	tcase_add_test(tc_core, test_fn_lda_abx);
 	suite_add_tcase(s, tc_core);
 	return s;
 }

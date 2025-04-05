@@ -2,6 +2,7 @@
 #define GUARD
 
 #define MEM 1024*64
+#define NO_INSTRUCTIONS 256
 
 typedef unsigned char Byte;
 typedef unsigned short Word;
@@ -52,10 +53,30 @@ enum CYCLES{
 	CCL_LD_IM 		= 2,		// Cycle for the LD<...> immediate mode instruction
 	CCL_LD_ZP 		= 3,		// Cycle for the LD<...> Zero Page mode instruction
 	CCL_LD_ZPX		= 4,		// Cycle for the LD<...> Zero Page indeXed mode instruction
+	CCL_LD_AB		= 4,		// Cycle for the LD<...> Absolute mode instruction
+	CCL_LD_ABX		= 5,		// Cycle for the LD<...> Absolute indeXed mode instruction
 	CCL_JSR			= 6,		// Cycle for the JSR instruction
 };
 
+typedef void (*f_instruction)(u32*, CPU*, Memory*);
+
+typedef struct{
+	f_instruction functions[NO_INSTRUCTIONS];
+	Byte init: 1;
+} function_manager;
+
+// Functions provided by instructions.c
+void init(void);
+void execute_instruction(Byte opcode, u32* cycles, CPU* cpu, Memory* mem);
+
+// Functions provided by proc.c
+void LDSet(CPU* cpu);
+Byte read_without_pc(u32 *cycles, Word address, Memory* mem);
 void reset(CPU* cpu, Memory* mem);
+void free_resource(CPU** cpu, Memory** mem);
+Byte fetch_byte(u32 *cycles, CPU* cpu, Memory* mem);
+Word fetch_word(u32 *cycles, CPU* cpu, Memory* mem);
+void write_word(Word value, u32 addr, u32 *cycles, Memory* mem);
 void execute(CPU* cpu, Memory* mem, u32 cycles);
 void free_resource(CPU** cpu, Memory** mem);
 
