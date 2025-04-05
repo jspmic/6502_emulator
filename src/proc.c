@@ -112,6 +112,17 @@ void execute(CPU* cpu, Memory* mem, u32 cycles){
 				cpu->a = addr_value;
 				LDSet(cpu);
 				break;
+
+			case INS_LDA_ABX:
+				operandW = fetch_word(&cycles, cpu, mem); // Absolute address
+				operandW += (cpu->x);
+				cycles--;
+
+				addr_value = read_without_pc(&cycles, operandW, mem);
+				cpu->a = addr_value;
+				LDSet(cpu);
+				break;
+
 			case INS_JSR:
 				operandW = fetch_word(&cycles, cpu, mem); // Subroutine address
 
