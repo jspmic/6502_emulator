@@ -52,6 +52,7 @@ enum CYCLES{
 	CCL_LD_IM 		= 2,		// Cycle for the LD<...> immediate mode instruction
 	CCL_LD_ZP 		= 3,		// Cycle for the LD<...> Zero Page mode instruction
 	CCL_LD_ZPX		= 4,		// Cycle for the LD<...> Zero Page indeXed mode instruction
+	CCL_LD_AB		= 4,		// Cycle for the LD<...> Zero Page indeXed mode instruction
 	CCL_JSR			= 6,		// Cycle for the JSR instruction
 };
 
