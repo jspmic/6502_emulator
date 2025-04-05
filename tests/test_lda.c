@@ -51,7 +51,6 @@ START_TEST (test_fn_lda_zp)
 	Memory* mem = malloc(sizeof(Memory));
 	reset(cpu, mem);
 
-	// Second execution with cpu->N == 1
 	mem->data[cpu->pc] = INS_LDA_ZP;
 	mem->data[(cpu->pc)+1] = addr;
 	mem->data[addr] = value;
@@ -73,7 +72,6 @@ START_TEST (test_fn_lda_zpx)
 	Memory* mem = malloc(sizeof(Memory));
 	reset(cpu, mem);
 
-	// Second execution with cpu->N == 1
 	mem->data[cpu->pc] = INS_LDA_ZPX;
 	mem->data[(cpu->pc)+1] = addr;
 	cpu->x = offset;
@@ -132,6 +130,7 @@ START_TEST (test_fn_lda_abx)
 END_TEST
 
 Suite* fn_lda_suite (void){
+	init();
 	Suite* s;
 	TCase *tc_core;
 	s = suite_create("fn_LDA");
