@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <memory.h>
 #include <assert.h>
 #include <stdlib.h>
@@ -59,9 +60,24 @@ Byte read_without_pc(u32 *cycles, Word address, Memory* mem){
 	return data;
 }
 
-void LDSet(CPU* cpu){
-	cpu->Z = (cpu->a) == 0;
-	cpu->N = ((cpu->a) & 0b01000000) > 0;
+void LDSet(CPU* cpu, u32 dst){
+	Byte target_reg;
+	switch (dst){
+		case REG_A:
+			target_reg = cpu->a;
+			break;
+		case REG_X:
+			target_reg = cpu->x;
+			break;
+		case REG_Y:
+			target_reg = cpu->y;
+			break;
+		default:
+			perror("LDSet");
+			break;
+	}
+	cpu->Z = (target_reg) == 0;
+	cpu->N = ((target_reg) & 0b01000000) > 0;
 }
 
 void execute(CPU* cpu, Memory* mem, u32 cycles){
