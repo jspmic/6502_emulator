@@ -4,6 +4,10 @@
 #define MEM 1024*64
 #define NO_INSTRUCTIONS 256
 
+#define REG_A	65
+#define REG_X	88
+#define REG_Y	89
+
 typedef unsigned char Byte;
 typedef unsigned short Word;
 typedef unsigned int u32;
@@ -65,12 +69,19 @@ typedef struct{
 	Byte init: 1;
 } function_manager;
 
+// Functions provided by addr.c
+void im(u32* cycles, CPU* cpu, Memory* mem, Byte** dst);
+void zp(u32* cycles, CPU* cpu, Memory* mem, Byte** dst);
+void zpx(u32* cycles, CPU* cpu, Memory* mem, Byte** dst);
+void ab(u32* cycles, CPU* cpu, Memory* mem, Byte** dst);
+void abx(u32* cycles, CPU* cpu, Memory* mem, Byte** dst);
+
 // Functions provided by instructions.c
 void init(void);
 void execute_instruction(Byte opcode, u32* cycles, CPU* cpu, Memory* mem);
 
 // Functions provided by proc.c
-void LDSet(CPU* cpu);
+void LDSet(CPU* cpu, u32 dst);
 Byte read_without_pc(u32 *cycles, Word address, Memory* mem);
 void reset(CPU* cpu, Memory* mem);
 void free_resource(CPU** cpu, Memory** mem);
