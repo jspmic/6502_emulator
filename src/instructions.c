@@ -13,8 +13,8 @@ void execute_instruction(Byte opcode, u32* cycles, CPU* cpu, Memory* mem){
 }
 
 void fn_lda_im(u32 *cycles, CPU* cpu, Memory* mem){
-	Byte operand = fetch_byte(cycles, cpu, mem);
-	cpu->a = operand;
+	Byte* addr = &(cpu->a);
+	im(cycles, cpu, mem, &addr);
 	LDSet(cpu);
 }
 
@@ -55,15 +55,15 @@ void fn_lda_abx(u32 *cycles, CPU* cpu, Memory* mem){
 }
 
 void fn_ldx_im(u32 *cycles, CPU* cpu, Memory* mem){
-	Byte operand = fetch_byte(cycles, cpu, mem);
-	cpu->x = operand;
+	Byte* addr = &(cpu->x);
+	im(cycles, cpu, mem, &addr);
 	cpu->Z = (cpu->x) == 0;
 	cpu->N = ((cpu->x) & 0b01000000) > 0;
 }
 
 void fn_ldy_im(u32 *cycles, CPU* cpu, Memory* mem){
-	Byte operand = fetch_byte(cycles, cpu, mem);
-	cpu->y = operand;
+	Byte* addr = &(cpu->y);
+	im(cycles, cpu, mem, &addr);
 	cpu->Z = (cpu->y) == 0;
 	cpu->N = ((cpu->y) & 0b01000000) > 0;
 }

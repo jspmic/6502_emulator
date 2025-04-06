@@ -65,6 +65,9 @@ typedef struct{
 	Byte init: 1;
 } function_manager;
 
+// Functions provided by addr.c
+void im(u32* cycles, CPU* cpu, Memory* mem, Byte** dst);
+
 // Functions provided by instructions.c
 void init(void);
 void execute_instruction(Byte opcode, u32* cycles, CPU* cpu, Memory* mem);
