@@ -131,7 +131,7 @@ END_TEST
 
 START_TEST (test_fn_lda_aby)
 {
-	Word addr = 0xDFF4, offset = 0x0005;
+	Word addr = 0xDFE5, offset = 0x0012;
 	Byte value = 0xDE;
 	CPU* cpu = malloc(sizeof(CPU));
 	Memory* mem = malloc(sizeof(Memory));
