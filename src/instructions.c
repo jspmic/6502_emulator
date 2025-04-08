@@ -42,6 +42,12 @@ void fn_lda_abx(u32 *cycles, CPU* cpu, Memory* mem){
 	LDSet(cpu, REG_A);
 }
 
+void fn_lda_aby(u32 *cycles, CPU* cpu, Memory* mem){
+	Byte* addr = &(cpu->a);
+	aby(cycles, cpu, mem, &addr);
+	LDSet(cpu, REG_A);
+}
+
 void fn_ldx_im(u32 *cycles, CPU* cpu, Memory* mem){
 	Byte* addr = &(cpu->x);
 	im(cycles, cpu, mem, &addr);
@@ -62,6 +68,7 @@ void init(void){
 	subscribe(fn_lda_zpx, INS_LDA_ZPX);
 	subscribe(fn_lda_ab, INS_LDA_AB);
 	subscribe(fn_lda_abx, INS_LDA_ABX);
+	subscribe(fn_lda_aby, INS_LDA_ABY);
 	subscribe(fn_ldx_im, INS_LDX_IM);
 	subscribe(fn_ldy_im, INS_LDY_IM);
 }

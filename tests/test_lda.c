@@ -129,6 +129,28 @@ START_TEST (test_fn_lda_abx)
 }
 END_TEST
 
+START_TEST (test_fn_lda_aby)
+{
+	Word addr = 0xDFE5, offset = 0x0012;
+	Byte value = 0xDE;
+	CPU* cpu = malloc(sizeof(CPU));
+	Memory* mem = malloc(sizeof(Memory));
+	reset(cpu, mem);
+
+	cpu->y = offset;
+	mem->data[cpu->pc] = INS_LDA_ABY;
+	mem->data[(cpu->pc)+1] = addr;
+	mem->data[addr+offset] = value;
+
+	execute(cpu, mem, CCL_LD_ABY);
+	ck_assert((cpu->a)==value);
+	ck_assert((cpu->Z)==0x0);
+	ck_assert((cpu->N)==0x1);
+
+	free_resource(&cpu, &mem);
+}
+END_TEST
+
 Suite* fn_lda_suite (void){
 	init();
 	Suite* s;
@@ -141,6 +163,7 @@ Suite* fn_lda_suite (void){
 	tcase_add_test(tc_core, test_fn_lda_zpx);
 	tcase_add_test(tc_core, test_fn_lda_ab);
 	tcase_add_test(tc_core, test_fn_lda_abx);
+	tcase_add_test(tc_core, test_fn_lda_aby);
 	suite_add_tcase(s, tc_core);
 	return s;
 }
