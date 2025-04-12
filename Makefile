@@ -10,7 +10,7 @@ BUILD_DIR=build
 BIN=main
 BIN_TEST=test
 
-TEST_RESET=$(shell ls $(SRC_DIR)/*.c | grep -v main) $(shell ls $(TEST_DIR)/*.c)
+TEST_SRC=$(shell ls $(SRC_DIR)/*.c | grep -v main) $(shell ls $(TEST_DIR)/*.c)
 SRC=$(shell ls $(SRC_DIR)/*.c)
 
 .PHONY: build make-build clean view vreset
@@ -32,7 +32,7 @@ make-build:
 	fi
 
 test:
-	$(CC) $(CFLAGS_TEST) $(SRC_TEST) $(TEST_RESET) -o $(BUILD_DIR)/$(BIN_TEST) $(END_FLAG)
+	$(CC) $(CFLAGS_TEST) $(SRC_TEST) $(TEST_SRC) -o $(BUILD_DIR)/$(BIN_TEST) $(END_FLAG)
 
 clean:
 	@rm $(BUILD_DIR)/*
