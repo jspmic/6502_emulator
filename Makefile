@@ -1,5 +1,5 @@
-CC=gcc
-CFLAGS=-Wall -g
+CC=clang
+CFLAGS=-Wall -pedantic
 CFLAGS_TEST=-Wall -g -lm -I
 SRC_TEST=../src
 END_FLAG=-lcheck
@@ -24,15 +24,15 @@ view:
 vtest: test
 	./$(BUILD_DIR)/$(BIN_TEST)
 
+test: make-build
+	$(CC) $(CFLAGS_TEST) $(SRC_TEST) $(TEST_SRC) -o $(BUILD_DIR)/$(BIN_TEST) $(END_FLAG)
+
 make-build:
 	@if [ -d "$(BUILD_DIR)" ]; then \
 		echo "$(BUILD_DIR) exists..."; \
 	else \
-		@mkdir $(BUILD_DIR); \
+		mkdir $(BUILD_DIR); \
 	fi
-
-test:
-	$(CC) $(CFLAGS_TEST) $(SRC_TEST) $(TEST_SRC) -o $(BUILD_DIR)/$(BIN_TEST) $(END_FLAG)
 
 clean:
 	@rm $(BUILD_DIR)/*
