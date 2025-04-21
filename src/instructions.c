@@ -62,7 +62,7 @@ void fn_ldy_im(u32 *cycles, CPU* cpu, Memory* mem){
 
 void init(void){
 	manager = malloc(sizeof(function_manager));
-	manager->init = 0b1;
+	manager->init = 0x1;
 	subscribe(fn_lda_im, INS_LDA_IM);
 	subscribe(fn_lda_zp, INS_LDA_ZP);
 	subscribe(fn_lda_zpx, INS_LDA_ZPX);

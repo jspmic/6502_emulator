@@ -77,7 +77,7 @@ void LDSet(CPU* cpu, u32 dst){
 			return;
 	}
 	cpu->Z = (target_reg) == 0;
-	cpu->N = ((target_reg) & 0b01000000) > 0;
+	cpu->N = ((target_reg) & 0x40) > 0;
 }
 
 void execute(CPU* cpu, Memory* mem, u32 cycles){
