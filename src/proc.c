@@ -74,7 +74,7 @@ void LDSet(CPU* cpu, u32 dst){
 			break;
 		default:
 			perror("LDSet");
-			break;
+			return;
 	}
 	cpu->Z = (target_reg) == 0;
 	cpu->N = ((target_reg) & 0b01000000) > 0;
