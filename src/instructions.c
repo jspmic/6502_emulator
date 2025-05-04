@@ -54,9 +54,51 @@ void fn_ldx_im(u32 *cycles, CPU* cpu, Memory* mem){
 	LDSet(cpu, REG_X);
 }
 
+void fn_ldx_zp(u32 *cycles, CPU* cpu, Memory* mem){
+	Byte* addr = &(cpu->x);
+	zp(cycles, cpu, mem, &addr);
+	LDSet(cpu, REG_X);
+}
+
+void fn_ldx_zpy(u32 *cycles, CPU* cpu, Memory* mem){
+	Byte* addr = &(cpu->x);
+	zpy(cycles, cpu, mem, &addr);
+	LDSet(cpu, REG_X);
+}
+
+void fn_ldx_ab(u32 *cycles, CPU* cpu, Memory* mem){
+	Byte* addr = &(cpu->x);
+	ab(cycles, cpu, mem, &addr);
+	LDSet(cpu, REG_X);
+}
+
 void fn_ldy_im(u32 *cycles, CPU* cpu, Memory* mem){
 	Byte* addr = &(cpu->y);
 	im(cycles, cpu, mem, &addr);
+	LDSet(cpu, REG_Y);
+}
+
+void fn_ldy_zp(u32 *cycles, CPU* cpu, Memory* mem){
+	Byte* addr = &(cpu->y);
+	zp(cycles, cpu, mem, &addr);
+	LDSet(cpu, REG_Y);
+}
+
+void fn_ldy_zpx(u32 *cycles, CPU* cpu, Memory* mem){
+	Byte* addr = &(cpu->y);
+	zpx(cycles, cpu, mem, &addr);
+	LDSet(cpu, REG_Y);
+}
+
+void fn_ldy_ab(u32 *cycles, CPU* cpu, Memory* mem){
+	Byte* addr = &(cpu->y);
+	ab(cycles, cpu, mem, &addr);
+	LDSet(cpu, REG_Y);
+}
+
+void fn_ldy_abx(u32 *cycles, CPU* cpu, Memory* mem){
+	Byte* addr = &(cpu->y);
+	abx(cycles, cpu, mem, &addr);
 	LDSet(cpu, REG_Y);
 }
 
@@ -70,5 +112,12 @@ void init(void){
 	subscribe(fn_lda_abx, INS_LDA_ABX);
 	subscribe(fn_lda_aby, INS_LDA_ABY);
 	subscribe(fn_ldx_im, INS_LDX_IM);
+	subscribe(fn_ldx_zp, INS_LDX_ZP);
+	subscribe(fn_ldx_zpy, INS_LDX_ZPY);
+	subscribe(fn_ldx_ab, INS_LDX_AB);
 	subscribe(fn_ldy_im, INS_LDY_IM);
+	subscribe(fn_ldy_zp, INS_LDY_ZP);
+	subscribe(fn_ldy_zpx, INS_LDY_ZPX);
+	subscribe(fn_ldy_ab, INS_LDY_AB);
+	subscribe(fn_ldy_abx, INS_LDY_ABX);
 }

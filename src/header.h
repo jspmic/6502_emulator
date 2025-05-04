@@ -37,9 +37,16 @@ typedef struct{
 } CPU;
 
 enum OPCODES{
-	INS_LDY_IM		= 0xA0,
+	INS_LDY_IM		= 0xA0,		// LDY Immediate
+	INS_LDY_ZP		= 0xA4,		// LDY Zero Page
+	INS_LDY_ZPX		= 0xB4,		// LDY Zero Page indeXed
+	INS_LDY_AB		= 0xAC,		// LDY Absolute
+	INS_LDY_ABX		= 0xBC,		// LDY Absolute indeXed
 
-	INS_LDX_IM		= 0xA2,
+	INS_LDX_IM		= 0xA2,		// LDX Immediate
+	INS_LDX_ZP		= 0xA6,		// LDX Zero Page
+	INS_LDX_ZPY		= 0xB6,		// LDX Zero Page, Y
+	INS_LDX_AB		= 0xAE,		// LDX Absolute
 
 	INS_LDA_IM		= 0xA9,		// LDA Immediate
 	INS_LDA_ZP		= 0xA5,		// LDA Zero Page
@@ -57,11 +64,10 @@ enum CYCLES{
 	CCL_LD_IM 		= 2,		// Cycle for the LD<...> immediate mode instruction
 	CCL_LD_ZP 		= 3,		// Cycle for the LD<...> Zero Page mode instruction
 	CCL_LD_ZPX		= 4,		// Cycle for the LD<...> Zero Page indeXed mode instruction
+	CCL_LD_ZPY		= 4,		// Cycle for the LD<...> Zero Page, Y mode instruction
 	CCL_LD_AB		= 4,		// Cycle for the LD<...> Absolute mode instruction
 	CCL_LD_ABX		= 5,		// Cycle for the LD<...> Absolute indeXed mode instruction
 	CCL_LD_ABY		= 5,		// Cycle for the LD<...> Absolute indeXed mode instruction
-	CCL_LDA_IDX		= 6,		// Cycle for the Indexed Indirect instruction
-	CCL_LDA_IDY		= 6,		// Cycle for the Indirect Indexed instruction
 	CCL_JSR			= 6,		// Cycle for the JSR instruction
 };
 
@@ -76,10 +82,10 @@ typedef struct{
 void im(u32* cycles, CPU* cpu, Memory* mem, Byte** dst);
 void zp(u32* cycles, CPU* cpu, Memory* mem, Byte** dst);
 void zpx(u32* cycles, CPU* cpu, Memory* mem, Byte** dst);
+void zpy(u32* cycles, CPU* cpu, Memory* mem, Byte** dst);
 void ab(u32* cycles, CPU* cpu, Memory* mem, Byte** dst);
 void abx(u32* cycles, CPU* cpu, Memory* mem, Byte** dst);
 void aby(u32* cycles, CPU* cpu, Memory* mem, Byte** dst);
-void indirect_x(u32* cycles, CPU* cpu, Memory* mem, Byte** dst);
 
 // Functions provided by instructions.c
 void init(void);
