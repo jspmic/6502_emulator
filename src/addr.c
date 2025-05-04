@@ -81,3 +81,23 @@ void aby(u32* cycles, CPU* cpu, Memory* mem, Byte** dst){
 	Byte addr_value = read_without_pc(cycles, operandW, mem);
 	*(*dst) = addr_value;
 }
+
+/* Indexed Indirect addressing mode
+params:
+- cycles: Instruction cycles
+- cpu: the CPU struct
+- mem: the Memory struct
+- dst: destination address(usually a cpu register) */
+void indirect_x(u32* cycles, CPU* cpu, Memory* mem, Byte** dst){
+	Byte operand = fetch_byte(cycles, cpu, mem); // Zero Page address
+
+	// If the sum exceeds 1 byte, it will truncate it(zero page wrap)
+	operand += (cpu->x);
+	// (*cycles)--;
+
+	Byte LSB = read_without_pc(cycles, operand, mem);
+	Byte MSB = read_without_pc(cycles, ++operand, mem);
+
+	Word target_addr = void;
+	// *(*dst) = addr_value;
+}

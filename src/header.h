@@ -60,6 +60,8 @@ enum CYCLES{
 	CCL_LD_AB		= 4,		// Cycle for the LD<...> Absolute mode instruction
 	CCL_LD_ABX		= 5,		// Cycle for the LD<...> Absolute indeXed mode instruction
 	CCL_LD_ABY		= 5,		// Cycle for the LD<...> Absolute indeXed mode instruction
+	CCL_LDA_IDX		= 6,		// Cycle for the Indexed Indirect instruction
+	CCL_LDA_IDY		= 6,		// Cycle for the Indirect Indexed instruction
 	CCL_JSR			= 6,		// Cycle for the JSR instruction
 };
 
@@ -77,6 +79,7 @@ void zpx(u32* cycles, CPU* cpu, Memory* mem, Byte** dst);
 void ab(u32* cycles, CPU* cpu, Memory* mem, Byte** dst);
 void abx(u32* cycles, CPU* cpu, Memory* mem, Byte** dst);
 void aby(u32* cycles, CPU* cpu, Memory* mem, Byte** dst);
+void indirect_x(u32* cycles, CPU* cpu, Memory* mem, Byte** dst);
 
 // Functions provided by instructions.c
 void init(void);
