@@ -40,6 +40,23 @@ void zpx(u32* cycles, CPU* cpu, Memory* mem, Byte** dst){
 	*(*dst) = addr_value;
 }
 
+/* Zero-page, Y addressing mode
+params:
+- cycles: Instruction cycles
+- cpu: the CPU struct
+- mem: the Memory struct
+- dst: destination address(usually a cpu register) */
+void zpy(u32* cycles, CPU* cpu, Memory* mem, Byte** dst){
+	Byte operand = fetch_byte(cycles, cpu, mem); // Zero Page address
+
+	// If the sum exceeds 1 byte, it will truncate it
+	operand += (cpu->y);
+	(*cycles)--;
+
+	Byte addr_value = read_without_pc(cycles, operand, mem);
+	*(*dst) = addr_value;
+}
+
 /* Absolute addressing mode
 params:
 - cycles: Instruction cycles
