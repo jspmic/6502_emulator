@@ -102,6 +102,14 @@ void fn_ldy_abx(u32 *cycles, CPU* cpu, Memory* mem){
 	LDSet(cpu, REG_Y);
 }
 
+void fn_sta_zp(u32 *cycles, CPU* cpu, Memory* mem){
+	zp_st(cycles, cpu, mem, &(cpu->a));
+}
+
+void fn_sta_zpx(u32 *cycles, CPU* cpu, Memory* mem){
+	zpx_st(cycles, cpu, mem, &(cpu->a));
+}
+
 void init(void){
 	manager = malloc(sizeof(function_manager));
 	manager->init = 0x1;
@@ -120,4 +128,7 @@ void init(void){
 	subscribe(fn_ldy_zpx, INS_LDY_ZPX);
 	subscribe(fn_ldy_ab, INS_LDY_AB);
 	subscribe(fn_ldy_abx, INS_LDY_ABX);
+
+	subscribe(fn_sta_zp, INS_STA_ZP);
+	subscribe(fn_sta_zpx, INS_STA_ZPX);
 }
