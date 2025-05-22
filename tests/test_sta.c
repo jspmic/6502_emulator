@@ -42,7 +42,6 @@ START_TEST (test_fn_sta_zpx)
 END_TEST
 
 Suite* fn_sta_suite (void){
-	init();
 	Suite* s;
 	TCase *tc_core;
 	s = suite_create("fn_STA");

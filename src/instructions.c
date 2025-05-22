@@ -110,7 +110,7 @@ void fn_sta_zpx(u32 *cycles, CPU* cpu, Memory* mem){
 	zpx_st(cycles, cpu, mem, &(cpu->a));
 }
 
-void init(void){
+__attribute__((constructor)) void init(void){
 	manager = malloc(sizeof(function_manager));
 	manager->init = 0x1;
 	subscribe(fn_lda_im, INS_LDA_IM);
