@@ -54,11 +54,12 @@ enum OPCODES{
 	INS_LDA_AB		= 0xAD,		// LDA Absolute
 	INS_LDA_ABX		= 0xBD,		// LDA Absolute indeXed
 	INS_LDA_ABY		= 0xB9,		// LDA Absolute Y
-	INS_LDA_IDX		= 0xA1,		// LDA Indirect indeXed
+	INS_LDA_INDX	= 0xA1,		// LDA Indexed Indirect
 	INS_LDA_IDY		= 0xB1,		// LDA Indirect Y
 
 	INS_STA_ZP		= 0x85,		// STA Zero Page
 	INS_STA_ZPX		= 0x95,		// STA Zero Page indeXed
+	INS_STA_INDX	= 0x81,		// STA Indexed Indirect
 
 	INS_JSR			= 0x20,		// JSR
 };
@@ -71,9 +72,11 @@ enum CYCLES{
 	CCL_LD_AB		= 4,		// Cycle for the LD<...> Absolute mode instruction
 	CCL_LD_ABX		= 5,		// Cycle for the LD<...> Absolute indeXed mode instruction
 	CCL_LD_ABY		= 5,		// Cycle for the LD<...> Absolute indeXed mode instruction
+	CCL_LD_INDX		= 6,		// Cycle for the LD<...> Indexed Indirect mode instruction
 
 	CCL_ST_ZP 		= 3,		// Cycle for the ST<...> Zero Page mode instruction
 	CCL_ST_ZPX		= 4,		// Cycle for the ST<...> Zero Page indeXed mode instruction
+	CCL_ST_INDX		= 6,		// Cycle for the ST<...> Indexed Indirect mode instruction
 
 	CCL_JSR			= 6,		// Cycle for the JSR instruction
 };
@@ -93,7 +96,9 @@ void zpy(u32* cycles, CPU* cpu, Memory* mem, Byte** dst);
 void ab(u32* cycles, CPU* cpu, Memory* mem, Byte** dst);
 void abx(u32* cycles, CPU* cpu, Memory* mem, Byte** dst);
 void aby(u32* cycles, CPU* cpu, Memory* mem, Byte** dst);
+void indX(u32* cycles, CPU* cpu, Memory* mem, Byte** dst);
 
+void indX_st(u32* cycles, CPU* cpu, Memory* mem, Byte* src);
 void zp_st(u32* cycles, CPU* cpu, Memory* mem, Byte* src);
 void zpx_st(u32* cycles, CPU* cpu, Memory* mem, Byte* src);
 
