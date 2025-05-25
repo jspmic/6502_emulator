@@ -1,6 +1,6 @@
 CC=clang
-CFLAGS=-Wall -pedantic
-CFLAGS_TEST=-Wall -g -lm -I
+CFLAGS=-Wall -pedantic -g
+CFLAGS_TEST=-Wall -lm -I
 SRC_TEST=../src
 END_FLAG=-lcheck
 
