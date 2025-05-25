@@ -42,6 +42,12 @@ void fn_lda_abx(u32 *cycles, CPU* cpu, Memory* mem){
 	LDSet(cpu, REG_A);
 }
 
+void fn_lda_indX(u32 *cycles, CPU* cpu, Memory* mem){
+	Byte* addr = &(cpu->a);
+	indX(cycles, cpu, mem, &addr);
+	LDSet(cpu, REG_A);
+}
+
 void fn_lda_aby(u32 *cycles, CPU* cpu, Memory* mem){
 	Byte* addr = &(cpu->a);
 	aby(cycles, cpu, mem, &addr);
@@ -110,6 +116,10 @@ void fn_sta_zpx(u32 *cycles, CPU* cpu, Memory* mem){
 	zpx_st(cycles, cpu, mem, &(cpu->a));
 }
 
+void fn_sta_indX(u32 *cycles, CPU* cpu, Memory* mem){
+	indX_st(cycles, cpu, mem, &(cpu->a));
+}
+
 __attribute__((constructor)) void init(void){
 	manager = malloc(sizeof(function_manager));
 	manager->init = 0x1;
@@ -119,10 +129,13 @@ __attribute__((constructor)) void init(void){
 	subscribe(fn_lda_ab, INS_LDA_AB);
 	subscribe(fn_lda_abx, INS_LDA_ABX);
 	subscribe(fn_lda_aby, INS_LDA_ABY);
+	subscribe(fn_lda_indX, INS_LDA_INDX);
+
 	subscribe(fn_ldx_im, INS_LDX_IM);
 	subscribe(fn_ldx_zp, INS_LDX_ZP);
 	subscribe(fn_ldx_zpy, INS_LDX_ZPY);
 	subscribe(fn_ldx_ab, INS_LDX_AB);
+
 	subscribe(fn_ldy_im, INS_LDY_IM);
 	subscribe(fn_ldy_zp, INS_LDY_ZP);
 	subscribe(fn_ldy_zpx, INS_LDY_ZPX);
@@ -131,4 +144,5 @@ __attribute__((constructor)) void init(void){
 
 	subscribe(fn_sta_zp, INS_STA_ZP);
 	subscribe(fn_sta_zpx, INS_STA_ZPX);
+	subscribe(fn_sta_indX, INS_STA_INDX);
 }
