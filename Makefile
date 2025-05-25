@@ -16,7 +16,7 @@ SRC=$(shell ls $(SRC_DIR)/*.c)
 .PHONY: build make-build clean view vreset
 
 build: make-build
-	$(CC) $(CFLAGS) main.c -I $(SRC_DIR) $(SRC) -o $(BUILD_DIR)/$(BIN)
+	$(CC) $(CFLAGS) $(BIN).c -I $(SRC_DIR) $(SRC) -o $(BUILD_DIR)/$(BIN)
 
 view:
 	./$(BUILD_DIR)/$(BIN)
