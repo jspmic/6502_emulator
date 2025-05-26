@@ -143,7 +143,7 @@ void indX(u32* cycles, CPU* cpu, Memory* mem, Byte** dst){
 
 	Byte LSB = read_without_pc(cycles, operand, mem);
 	Byte MSB = read_without_pc(cycles, operand+1, mem);
-	Word addr = (MSB<<8)+LSB;
+	Word addr = (MSB<<8) | LSB;
 	Byte addr_value = read_without_pc(cycles, addr, mem);
 	*(*dst) = addr_value;
 }
@@ -163,7 +163,47 @@ void indX_st(u32* cycles, CPU* cpu, Memory* mem, Byte* src){
 
 	Byte LSB = read_without_pc(cycles, operand, mem);
 	Byte MSB = read_without_pc(cycles, operand+1, mem);
-	Word addr = (MSB<<8)+LSB;
+	Word addr = (MSB<<8) | LSB;
+	mem->data[addr] = *src;
+	(*cycles)--;
+}
+
+/* Indirect Indexed addressing mode
+params:
+- cycles: Instruction cycles
+- cpu: the CPU struct
+- mem: the Memory struct
+- dst: destination address(usually a cpu register) */
+void indY(u32* cycles, CPU* cpu, Memory* mem, Byte** dst){
+	Byte operand = fetch_byte(cycles, cpu, mem); // Zero Page address
+
+	// If the sum exceeds 1 byte, it will truncate it
+	operand += (cpu->y);
+	(*cycles)--;
+
+	Byte LSB = read_without_pc(cycles, operand, mem);
+	Byte MSB = read_without_pc(cycles, operand+1, mem);
+	Word addr = (MSB<<8) | LSB;
+	Byte addr_value = read_without_pc(cycles, addr, mem);
+	*(*dst) = addr_value;
+}
+
+/* Indirect Indexed addressing mode for ST. instructions
+params:
+- cycles: Instruction cycles
+- cpu: the CPU struct
+- mem: the Memory struct
+- src: source address(usually a cpu register) */
+void indY_st(u32* cycles, CPU* cpu, Memory* mem, Byte* src){
+	Byte operand = fetch_byte(cycles, cpu, mem); // Zero Page address
+
+	// If the sum exceeds 1 byte, it will truncate it
+	operand += (cpu->y);
+	(*cycles)--;
+
+	Byte LSB = read_without_pc(cycles, operand, mem);
+	Byte MSB = read_without_pc(cycles, operand+1, mem);
+	Word addr = (MSB<<8) | LSB;
 	mem->data[addr] = *src;
 	(*cycles)--;
 }
