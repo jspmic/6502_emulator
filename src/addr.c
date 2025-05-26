@@ -11,7 +11,7 @@ void im(u32* cycles, CPU* cpu, Memory* mem, Byte** dst){
 	*(*dst) = operand;
 }
 
-/* Zero-page addressing mode
+/* Zero-page addressing mode for LD. instructions
 params:
 - cycles: Instruction cycles
 - cpu: the CPU struct
@@ -23,7 +23,19 @@ void zp(u32* cycles, CPU* cpu, Memory* mem, Byte** dst){
 	*(*dst) = addr_value;
 }
 
-/* Zero-page indexed addressing mode
+/* Zero-page addressing mode for ST. instructions
+params:
+- cycles: Instruction cycles
+- cpu: the CPU struct
+- mem: the Memory struct
+- src: src address(usually a cpu register) */
+void zp_st(u32* cycles, CPU* cpu, Memory* mem, Byte* src){
+	Byte operand = fetch_byte(cycles, cpu, mem); // Zero Page address of memory
+	mem->data[operand] = *(src);
+	(*cycles)--;
+}
+
+/* Zero-page indexed addressing mode for LD. instructions
 params:
 - cycles: Instruction cycles
 - cpu: the CPU struct
@@ -34,6 +46,40 @@ void zpx(u32* cycles, CPU* cpu, Memory* mem, Byte** dst){
 
 	// If the sum exceeds 1 byte, it will truncate it
 	operand += (cpu->x);
+	(*cycles)--;
+
+	Byte addr_value = read_without_pc(cycles, operand, mem);
+	*(*dst) = addr_value;
+}
+
+/* Zero-page indexed addressing mode for ST. instructions
+params:
+- cycles: Instruction cycles
+- cpu: the CPU struct
+- mem: the Memory struct
+- src: source address(usually a cpu register) */
+void zpx_st(u32* cycles, CPU* cpu, Memory* mem, Byte* src){
+	Byte operand = fetch_byte(cycles, cpu, mem); // Zero Page address
+
+	// If the sum exceeds 1 byte, it will truncate it
+	operand += (cpu->x);
+	(*cycles)--;
+
+	mem->data[operand] = *(src);
+	(*cycles)--;
+}
+
+/* Zero-page, Y addressing mode
+params:
+- cycles: Instruction cycles
+- cpu: the CPU struct
+- mem: the Memory struct
+- dst: destination address(usually a cpu register) */
+void zpy(u32* cycles, CPU* cpu, Memory* mem, Byte** dst){
+	Byte operand = fetch_byte(cycles, cpu, mem); // Zero Page address
+
+	// If the sum exceeds 1 byte, it will truncate it
+	operand += (cpu->y);
 	(*cycles)--;
 
 	Byte addr_value = read_without_pc(cycles, operand, mem);
@@ -88,16 +134,36 @@ params:
 - cpu: the CPU struct
 - mem: the Memory struct
 - dst: destination address(usually a cpu register) */
-void indirect_x(u32* cycles, CPU* cpu, Memory* mem, Byte** dst){
+void indX(u32* cycles, CPU* cpu, Memory* mem, Byte** dst){
 	Byte operand = fetch_byte(cycles, cpu, mem); // Zero Page address
 
-	// If the sum exceeds 1 byte, it will truncate it(zero page wrap)
+	// If the sum exceeds 1 byte, it will truncate it
 	operand += (cpu->x);
-	// (*cycles)--;
+	(*cycles)--;
 
 	Byte LSB = read_without_pc(cycles, operand, mem);
-	Byte MSB = read_without_pc(cycles, ++operand, mem);
+	Byte MSB = read_without_pc(cycles, operand+1, mem);
+	Word addr = (MSB<<8)+LSB;
+	Byte addr_value = read_without_pc(cycles, addr, mem);
+	*(*dst) = addr_value;
+}
 
-	Word target_addr = void;
-	// *(*dst) = addr_value;
+/* Indexed Indirect addressing mode for ST. instructions
+params:
+- cycles: Instruction cycles
+- cpu: the CPU struct
+- mem: the Memory struct
+- src: source address(usually a cpu register) */
+void indX_st(u32* cycles, CPU* cpu, Memory* mem, Byte* src){
+	Byte operand = fetch_byte(cycles, cpu, mem); // Zero Page address
+
+	// If the sum exceeds 1 byte, it will truncate it
+	operand += (cpu->x);
+	(*cycles)--;
+
+	Byte LSB = read_without_pc(cycles, operand, mem);
+	Byte MSB = read_without_pc(cycles, operand+1, mem);
+	Word addr = (MSB<<8)+LSB;
+	mem->data[addr] = *src;
+	(*cycles)--;
 }

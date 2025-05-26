@@ -1,6 +1,6 @@
 CC=clang
-CFLAGS=-Wall -pedantic
-CFLAGS_TEST=-Wall -g -lm -I
+CFLAGS=-Wall -pedantic -g
+CFLAGS_TEST=-Wall -lm -I
 SRC_TEST=../src
 END_FLAG=-lcheck
 
@@ -10,13 +10,13 @@ BUILD_DIR=build
 BIN=main
 BIN_TEST=test
 
-TEST_SRC=$(shell ls $(SRC_DIR)/*.c | grep -v main) $(shell ls $(TEST_DIR)/*.c)
+TEST_SRC=$(shell ls $(SRC_DIR)/*.c) $(shell ls $(TEST_DIR)/*.c)
 SRC=$(shell ls $(SRC_DIR)/*.c)
 
 .PHONY: build make-build clean view vreset
 
 build: make-build
-	$(CC) $(CFLAGS) $(SRC) -o $(BUILD_DIR)/$(BIN)
+	$(CC) $(CFLAGS) $(BIN).c -I $(SRC_DIR) $(SRC) -o $(BUILD_DIR)/$(BIN)
 
 view:
 	./$(BUILD_DIR)/$(BIN)

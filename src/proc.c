@@ -53,6 +53,11 @@ void write_word(Word value, u32 addr, u32 *cycles, Memory* mem){
 	(*cycles)-=2;
 }
 
+void write_byte(Byte value, u32 addr, u32 *cycles, Memory* mem){
+	mem->data[addr] = value;
+	(*cycles)--;
+}
+
 Byte read_without_pc(u32 *cycles, Word address, Memory* mem){
 	Byte data = mem->data[address];
 
