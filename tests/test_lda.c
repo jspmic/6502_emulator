@@ -177,6 +177,32 @@ START_TEST (test_fn_lda_indX)
 }
 END_TEST
 
+START_TEST (test_fn_lda_indY)
+{
+	Byte addr = 0xAF, offset = 0x12;
+	Byte lsb = 0x11, msb = 0x22;
+	Byte value = 0xDE;
+	Word value_addr = 0x2211; // MSB-LSB combo
+	CPU* cpu = malloc(sizeof(CPU));
+	Memory* mem = malloc(sizeof(Memory));
+	reset(cpu, mem);
+
+	mem->data[cpu->pc] = INS_LDA_INDY;
+	mem->data[(cpu->pc)+1] = addr;
+	cpu->y = offset;
+	mem->data[addr+offset] = lsb;
+	mem->data[addr+offset+1] = msb;
+	mem->data[value_addr] = value;
+
+	execute(cpu, mem, CCL_LD_INDY);
+	ck_assert((cpu->a)==value);
+	ck_assert((cpu->Z)==0x0);
+	ck_assert((cpu->N)==0x1);
+
+	free_resource(&cpu, &mem);
+}
+END_TEST
+
 Suite* fn_lda_suite (void){
 	Suite* s;
 	TCase *tc_core;
@@ -190,6 +216,7 @@ Suite* fn_lda_suite (void){
 	tcase_add_test(tc_core, test_fn_lda_abx);
 	tcase_add_test(tc_core, test_fn_lda_aby);
 	tcase_add_test(tc_core, test_fn_lda_indX);
+	tcase_add_test(tc_core, test_fn_lda_indY);
 	suite_add_tcase(s, tc_core);
 	return s;
 }
