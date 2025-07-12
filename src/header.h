@@ -47,6 +47,7 @@ enum OPCODES{
 	INS_LDX_ZP		= 0xA6,		// LDX Zero Page
 	INS_LDX_ZPY		= 0xB6,		// LDX Zero Page, Y
 	INS_LDX_AB		= 0xAE,		// LDX Absolute
+	INS_LDX_ABY		= 0xBE,		// LDX Absolute, Y
 
 	INS_LDA_IM		= 0xA9,		// LDA Immediate
 	INS_LDA_ZP		= 0xA5,		// LDA Zero Page
@@ -72,7 +73,7 @@ enum CYCLES{
 	CCL_LD_ZPY		= 4,		// Cycle for the LD<...> Zero Page, Y mode instruction
 	CCL_LD_AB		= 4,		// Cycle for the LD<...> Absolute mode instruction
 	CCL_LD_ABX		= 5,		// Cycle for the LD<...> Absolute indeXed mode instruction
-	CCL_LD_ABY		= 5,		// Cycle for the LD<...> Absolute indeXed mode instruction
+	CCL_LD_ABY		= 5,		// Cycle for the LD<...> Absolute, Y mode instruction
 	CCL_LD_INDX		= 6,		// Cycle for the LD<...> Indexed Indirect mode instruction
 	CCL_LD_INDY		= 6,		// Cycle for the LD<...> Indirect Indexed mode instruction
 
