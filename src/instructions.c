@@ -84,6 +84,12 @@ void fn_ldx_ab(u32 *cycles, CPU* cpu, Memory* mem){
 	LDSet(cpu, REG_X);
 }
 
+void fn_ldx_aby(u32 *cycles, CPU* cpu, Memory* mem){
+	Byte* addr = &(cpu->x);
+	aby(cycles, cpu, mem, &addr);
+	LDSet(cpu, REG_X);
+}
+
 void fn_ldy_im(u32 *cycles, CPU* cpu, Memory* mem){
 	Byte* addr = &(cpu->y);
 	im(cycles, cpu, mem, &addr);
@@ -146,6 +152,7 @@ __attribute__((constructor)) void init(void){
 	subscribe(fn_ldx_zp, INS_LDX_ZP);
 	subscribe(fn_ldx_zpy, INS_LDX_ZPY);
 	subscribe(fn_ldx_ab, INS_LDX_AB);
+	subscribe(fn_ldx_aby, INS_LDX_ABY);
 
 	subscribe(fn_ldy_im, INS_LDY_IM);
 	subscribe(fn_ldy_zp, INS_LDY_ZP);
