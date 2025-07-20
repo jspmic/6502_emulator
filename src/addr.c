@@ -1,3 +1,4 @@
+#include <assert.h>
 #include "header.h"
 
 /* Immediate addressing mode
@@ -205,5 +206,17 @@ void indY_st(u32* cycles, CPU* cpu, Memory* mem, Byte* src){
 	Byte MSB = read_without_pc(cycles, operand+1, mem);
 	Word addr = (MSB<<8) | LSB;
 	mem->data[addr] = *src;
+	(*cycles)--;
+}
+
+/* Absolute addressing mode
+params:
+- cycles: Instruction cycles
+- cpu: the CPU struct
+- mem: the Memory struct
+- dst: destination address(usually a cpu register) */
+void ab_st(u32* cycles, CPU* cpu, Memory* mem, Byte* src){
+	Word operandW = fetch_word(cycles, cpu, mem); // Absolute address
+	mem->data[operandW] = *src;
 	(*cycles)--;
 }
