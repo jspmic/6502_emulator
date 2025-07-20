@@ -136,6 +136,10 @@ void fn_sta_indY(u32 *cycles, CPU* cpu, Memory* mem){
 	indY_st(cycles, cpu, mem, &(cpu->a));
 }
 
+void fn_sta_ab(u32 *cycles, CPU* cpu, Memory* mem){
+	ab_st(cycles, cpu, mem, &(cpu->a));
+}
+
 __attribute__((constructor)) void init(void){
 	manager = malloc(sizeof(function_manager));
 	manager->init = 0x1;
@@ -164,4 +168,5 @@ __attribute__((constructor)) void init(void){
 	subscribe(fn_sta_zpx, INS_STA_ZPX);
 	subscribe(fn_sta_indX, INS_STA_INDX);
 	subscribe(fn_sta_indY, INS_STA_INDY);
+	subscribe(fn_sta_ab, INS_STA_AB);
 }
