@@ -90,12 +90,15 @@ START_TEST (test_fn_lda_ab)
 {
 	Word addr = 0xDFF4;
 	Byte value = 0xDE;
+	Byte LSB = 0xF4;
+	Byte MSB = 0xDF;
 	CPU* cpu = malloc(sizeof(CPU));
 	Memory* mem = malloc(sizeof(Memory));
 	reset(cpu, mem);
 
 	mem->data[cpu->pc] = INS_LDA_AB;
-	mem->data[(cpu->pc)+1] = addr;
+	mem->data[(cpu->pc)+1] = LSB;
+	mem->data[(cpu->pc)+2] = MSB;
 	mem->data[addr] = value;
 
 	execute(cpu, mem, CCL_LD_AB);
