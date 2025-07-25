@@ -1,6 +1,8 @@
 #ifndef GUARD
 #define GUARD
 
+#include <stdio.h>
+
 #define MEM 1024*64
 #define NO_INSTRUCTIONS 256
 
@@ -95,6 +97,7 @@ typedef void (*f_instruction)(u32*, CPU*, Memory*);
 
 typedef struct{
 	f_instruction functions[NO_INSTRUCTIONS];
+	u32 cycles[NO_INSTRUCTIONS];
 	Byte init: 1;
 } function_manager;
 
@@ -118,6 +121,7 @@ void zpx_st(u32* cycles, CPU* cpu, Memory* mem, Byte* src);
 // Functions provided by instructions.c
 void init(void);
 void execute_instruction(Byte opcode, u32* cycles, CPU* cpu, Memory* mem);
+extern function_manager* manager;
 
 // Functions provided by proc.c
 void LDSet(CPU* cpu, u32 dst);
@@ -130,5 +134,11 @@ void write_byte(Byte value, u32 addr, u32 *cycles, Memory* mem);
 void write_word(Word value, u32 addr, u32 *cycles, Memory* mem);
 void execute(CPU* cpu, Memory* mem, u32 cycles);
 void free_resource(CPU** cpu, Memory** mem);
+
+// Functions provided by loader.c
+FILE* read_binary(const char* name);
+void print_binary(FILE* fd);
+void close_binary(FILE* fd);
+void load_memory(FILE* fd, Memory* mem, CPU* cpu);
 
 #endif
