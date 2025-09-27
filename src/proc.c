@@ -91,3 +91,10 @@ void execute(CPU* cpu, Memory* mem, u32 cycles){
 		execute_instruction(instruction, &cycles, cpu, mem);
 	}
 }
+
+// For debugging
+void print_memory(Memory* mem) {
+	for (int i = 0; i < MEM; i++) {
+		printf("%.4X  ==  %.2X\n", i, mem->data[i]);
+	}
+}

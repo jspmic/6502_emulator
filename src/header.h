@@ -134,6 +134,7 @@ void write_byte(Byte value, u32 addr, u32 *cycles, Memory* mem);
 void write_word(Word value, u32 addr, u32 *cycles, Memory* mem);
 void execute(CPU* cpu, Memory* mem, u32 cycles);
 void free_resource(CPU** cpu, Memory** mem);
+void print_memory(Memory* mem);
 
 // Functions provided by loader.c
 FILE* read_binary(const char* name);
