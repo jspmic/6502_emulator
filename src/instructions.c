@@ -4,8 +4,9 @@
 
 function_manager* manager;
 
-void subscribe(f_instruction f, Byte opcode){
+void subscribe(f_instruction f, Byte opcode, u32 instruction_cycles){
 	manager->functions[opcode] = f;
+	manager->cycles[opcode] = instruction_cycles;
 }
 
 void execute_instruction(Byte opcode, u32* cycles, CPU* cpu, Memory* mem){
@@ -141,32 +142,32 @@ void fn_sta_ab(u32 *cycles, CPU* cpu, Memory* mem){
 }
 
 __attribute__((constructor)) void init(void){
-	manager = malloc(sizeof(function_manager));
+	manager = (function_manager*) calloc(1, sizeof(function_manager));
 	manager->init = 0x1;
-	subscribe(fn_lda_im, INS_LDA_IM);
-	subscribe(fn_lda_zp, INS_LDA_ZP);
-	subscribe(fn_lda_zpx, INS_LDA_ZPX);
-	subscribe(fn_lda_ab, INS_LDA_AB);
-	subscribe(fn_lda_abx, INS_LDA_ABX);
-	subscribe(fn_lda_aby, INS_LDA_ABY);
-	subscribe(fn_lda_indX, INS_LDA_INDX);
-	subscribe(fn_lda_indY, INS_LDA_INDY);
+	subscribe(fn_lda_im, INS_LDA_IM, CCL_LD_IM);
+	subscribe(fn_lda_zp, INS_LDA_ZP, CCL_LD_ZP);
+	subscribe(fn_lda_zpx, INS_LDA_ZPX, CCL_LD_ZPX);
+	subscribe(fn_lda_ab, INS_LDA_AB, CCL_LD_AB);
+	subscribe(fn_lda_abx, INS_LDA_ABX, CCL_LD_ABX);
+	subscribe(fn_lda_aby, INS_LDA_ABY, CCL_LD_ABY);
+	subscribe(fn_lda_indX, INS_LDA_INDX, CCL_LD_INDX);
+	subscribe(fn_lda_indY, INS_LDA_INDY, CCL_LD_INDY);
 
-	subscribe(fn_ldx_im, INS_LDX_IM);
-	subscribe(fn_ldx_zp, INS_LDX_ZP);
-	subscribe(fn_ldx_zpy, INS_LDX_ZPY);
-	subscribe(fn_ldx_ab, INS_LDX_AB);
-	subscribe(fn_ldx_aby, INS_LDX_ABY);
+	subscribe(fn_ldx_im, INS_LDX_IM, CCL_LD_IM);
+	subscribe(fn_ldx_zp, INS_LDX_ZP, CCL_LD_ZP);
+	subscribe(fn_ldx_zpy, INS_LDX_ZPY, CCL_LD_ZPY);
+	subscribe(fn_ldx_ab, INS_LDX_AB, CCL_LD_AB);
+	subscribe(fn_ldx_aby, INS_LDX_ABY, CCL_LD_ABY);
 
-	subscribe(fn_ldy_im, INS_LDY_IM);
-	subscribe(fn_ldy_zp, INS_LDY_ZP);
-	subscribe(fn_ldy_zpx, INS_LDY_ZPX);
-	subscribe(fn_ldy_ab, INS_LDY_AB);
-	subscribe(fn_ldy_abx, INS_LDY_ABX);
+	subscribe(fn_ldy_im, INS_LDY_IM, CCL_LD_IM);
+	subscribe(fn_ldy_zp, INS_LDY_ZP, CCL_LD_ZP);
+	subscribe(fn_ldy_zpx, INS_LDY_ZPX, CCL_LD_ZPX);
+	subscribe(fn_ldy_ab, INS_LDY_AB, CCL_LD_AB);
+	subscribe(fn_ldy_abx, INS_LDY_ABX, CCL_LD_ABX);
 
-	subscribe(fn_sta_zp, INS_STA_ZP);
-	subscribe(fn_sta_zpx, INS_STA_ZPX);
-	subscribe(fn_sta_indX, INS_STA_INDX);
-	subscribe(fn_sta_indY, INS_STA_INDY);
-	subscribe(fn_sta_ab, INS_STA_AB);
+	subscribe(fn_sta_zp, INS_STA_ZP, CCL_ST_ZP);
+	subscribe(fn_sta_zpx, INS_STA_ZPX, CCL_LD_ZPX);
+	subscribe(fn_sta_indX, INS_STA_INDX, CCL_ST_INDX);
+	subscribe(fn_sta_indY, INS_STA_INDY, CCL_ST_INDY);
+	subscribe(fn_sta_ab, INS_STA_AB, CCL_ST_AB);
 }

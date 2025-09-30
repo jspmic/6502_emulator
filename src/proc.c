@@ -24,8 +24,12 @@ void reset(CPU* cpu, Memory* mem){
 Byte fetch_byte(u32 *cycles, CPU* cpu, Memory* mem){
 	Byte data = mem->data[cpu->pc];
 
-	if ((cpu->pc)+1 < MEM)
+	if ((cpu->pc)+1 < MEM) {
 		cpu->pc++;
+	}
+	else {
+		cpu->pc = 0x0000;
+	}
 
 	(*cycles)--;
 	return data;
@@ -35,13 +39,21 @@ Byte fetch_byte(u32 *cycles, CPU* cpu, Memory* mem){
 Word fetch_word(u32 *cycles, CPU* cpu, Memory* mem){
 	// 6502: little endian
 	Word data = mem->data[cpu->pc];
-	if ((cpu->pc)+1 < MEM)
+	if ((cpu->pc)+1 < MEM) {
 		cpu->pc++;
+	}
+	else {
+		cpu->pc = 0x0000;
+	}
 
 	data |= ((mem->data[cpu->pc]) << 8);
 
-	if ((cpu->pc)+1 < MEM)
+	if ((cpu->pc)+1 < MEM) {
 		cpu->pc++;
+	}
+	else {
+		cpu->pc = 0x0000;
+	}
 
 	(*cycles)-=2;
 	return data;
@@ -85,10 +97,17 @@ void LDSet(CPU* cpu, u32 dst){
 	cpu->N = ((target_reg) & 0x40) > 0;
 }
 
-void execute(CPU* cpu, Memory* mem, u32 cycles){
-	for (;cycles > 0;){
-		Byte instruction = fetch_byte(&cycles, cpu, mem);
-		execute_instruction(instruction, &cycles, cpu, mem);
+void execute(CPU* cpu, Memory* mem){
+	for (;;) {
+		u32 cycles = manager->cycles[mem->data[cpu->pc]];
+		if (cycles == 0) {
+			break;
+		}
+
+		for (;cycles > 0;){
+			Byte instruction = fetch_byte(&cycles, cpu, mem);
+			execute_instruction(instruction, &cycles, cpu, mem);
+		}
 	}
 }
 

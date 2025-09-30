@@ -5,10 +5,13 @@ SRC_TEST=../src
 END_FLAG=-lcheck
 
 SRC_DIR=src
+LOADER_DIR=src/loader
 TEST_DIR=tests
 BUILD_DIR=build
 BIN=main
 BIN_TEST=test
+
+LOADER_SRC=$(shell ls $(LOADER_DIR)/*.c)
 
 TEST_SRC=$(shell ls $(SRC_DIR)/*.c) $(shell ls $(TEST_DIR)/*.c)
 SRC=$(shell ls $(SRC_DIR)/*.c)
@@ -16,7 +19,8 @@ SRC=$(shell ls $(SRC_DIR)/*.c)
 .PHONY: build make-build clean view vreset
 
 build: make-build
-	$(CC) $(CFLAGS) $(BIN).c -I $(SRC_DIR) $(SRC) -o $(BUILD_DIR)/$(BIN)
+	$(CC) $(CFLAGS) $(BIN).c -I $(SRC_DIR) $(SRC) \
+		-I $(LOADER_DIR) $(LOADER_SRC) -o $(BUILD_DIR)/$(BIN)
 
 view:
 	./$(BUILD_DIR)/$(BIN)
