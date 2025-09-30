@@ -14,7 +14,7 @@ START_TEST (test_fn_sta_zp)
 	mem->data[cpu->pc] = INS_STA_ZP;
 	mem->data[(cpu->pc)+1] = addr;
 
-	execute(cpu, mem, CCL_ST_ZP);
+	execute(cpu, mem);
 	ck_assert(mem->data[addr] == value);
 
 	free_resource(&cpu, &mem);
@@ -34,7 +34,7 @@ START_TEST (test_fn_sta_zpx)
 	mem->data[cpu->pc] = INS_STA_ZPX;
 	mem->data[(cpu->pc)+1] = addr;
 
-	execute(cpu, mem, CCL_ST_ZPX);
+	execute(cpu, mem);
 	ck_assert(mem->data[result_addr] == value);
 
 	free_resource(&cpu, &mem);
@@ -58,7 +58,7 @@ START_TEST (test_fn_sta_indX)
 	mem->data[addr+offset] = lsb;
 	mem->data[addr+offset+1] = msb;
 
-	execute(cpu, mem, CCL_ST_INDX);
+	execute(cpu, mem);
 	ck_assert((mem->data[value_addr]) == value);
 
 	free_resource(&cpu, &mem);
@@ -82,7 +82,7 @@ START_TEST (test_fn_sta_indY)
 	mem->data[addr+offset] = lsb;
 	mem->data[addr+offset+1] = msb;
 
-	execute(cpu, mem, CCL_ST_INDY);
+	execute(cpu, mem);
 	ck_assert((mem->data[value_addr]) == value);
 
 	free_resource(&cpu, &mem);
@@ -104,7 +104,7 @@ START_TEST (test_fn_sta_ab)
 	mem->data[(cpu->pc)+1] = LSB;
 	mem->data[(cpu->pc)+2] = MSB;
 
-	execute(cpu, mem, CCL_ST_AB);
+	execute(cpu, mem);
 	ck_assert((mem->data[addr])==value);
 
 	free_resource(&cpu, &mem);

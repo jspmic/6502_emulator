@@ -14,7 +14,7 @@ START_TEST (test_fn_ldy_im)
 	mem->data[cpu->pc] = INS_LDY_IM;
 	mem->data[(cpu->pc)+1] = c1;
 
-	execute(cpu, mem, CCL_LD_IM);
+	execute(cpu, mem);
 	ck_assert((cpu->y)==c1);
 	ck_assert((cpu->Z)==0x0);
 	ck_assert((cpu->N)==0x0);
@@ -33,7 +33,7 @@ START_TEST (test_fn_ldy_im_2)
 	mem->data[cpu->pc] = INS_LDY_IM;
 	mem->data[(cpu->pc)+1] = c2;
 
-	execute(cpu, mem, CCL_LD_IM);
+	execute(cpu, mem);
 	ck_assert((cpu->y)==c2);
 	ck_assert((cpu->Z)==0x0);
 	ck_assert((cpu->N)==0x1);
@@ -54,7 +54,7 @@ START_TEST (test_fn_ldy_zp)
 	mem->data[(cpu->pc)+1] = addr;
 	mem->data[addr] = value;
 
-	execute(cpu, mem, CCL_LD_ZP);
+	execute(cpu, mem);
 	ck_assert((cpu->y)==value);
 	ck_assert((cpu->Z)==0x0);
 	ck_assert((cpu->N)==0x1);
@@ -76,7 +76,7 @@ START_TEST (test_fn_ldy_zpx)
 	cpu->x = offset;
 	mem->data[addr+offset] = value;
 
-	execute(cpu, mem, CCL_LD_ZPX);
+	execute(cpu, mem);
 	ck_assert((cpu->y)==value);
 	ck_assert((cpu->Z)==0x0);
 	ck_assert((cpu->N)==0x1);
@@ -97,7 +97,7 @@ START_TEST (test_fn_ldy_ab)
 	mem->data[(cpu->pc)+1] = addr;
 	mem->data[addr] = value;
 
-	execute(cpu, mem, CCL_LD_AB);
+	execute(cpu, mem);
 	ck_assert((cpu->y)==value);
 	ck_assert((cpu->Z)==0x0);
 	ck_assert((cpu->N)==0x1);
@@ -119,7 +119,7 @@ START_TEST (test_fn_ldy_abx)
 	mem->data[(cpu->pc)+1] = addr;
 	mem->data[addr+offset] = value;
 
-	execute(cpu, mem, CCL_LD_ABX);
+	execute(cpu, mem);
 	ck_assert((cpu->y)==value);
 	ck_assert((cpu->Z)==0x0);
 	ck_assert((cpu->N)==0x1);
