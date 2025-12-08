@@ -1,80 +1,59 @@
-# 🧠 6502 Emulator
+# 6502 Emulator
 
-A minimal yet robust emulator for the legendary 6502 microprocessor, written in C with a decentralized structure for clarity, testability, and modularity.
+A small, self-contained emulator for the 6502 processor, written in C.
+The design emphasizes clarity, modularity, and testability. It is intended for programmers who enjoy working close to the hardware and who appreciate the simplicity of the original 8-bit architecture.
 
->     Built for hackers, low-level enthusiasts, and those who admire the elegance of the silicon heart behind the NES, Commodore 64, and Apple II.
+The 6502 powered systems such as the NES, Commodore 64, and Apple II.
+This project re-implements its behavior in a clean, inspectable form. This emulator is implemented for learning purposes only! Don't use it for a critical/serious project.
 
-# ✨ Features
+# Features
 
-- ✅ Accurate emulation of 6502 instructions, including addressing modes
+- Complete set of implemented 6502 instructions (with their addressing modes)
 
-- 🧩 Modular design with decentralized source layout
+- Decentralized and modular source tree
 
-- 🧪 Per-instruction-mode tests (e.g., LDA_IM, STA_ZP)
+- Per-instruction and per-addressing-mode tests
 
-- ⚙️ Compatible with GCC and Clang (see below for details)
+- Builds with GCC and Clang
 
-# 📦 Project Structure
+Each instruction is defined together with its addressing mode.
+This organization makes the code easy to follow and simplifies writing precise tests.
 
-This project follows a clean separation of responsibilities to ease development and testing:
+> Note: The layout will evolve. A dedicated `include/` directory for headers is planned.
 
-```
-6502-emulator/
-├── src/
-│   ├── addr.c         # All addressing mode implementations (e.g., IM, ZP, ABS)
-│   ├── proc.c         # Custom procedures (utilities, helpers, etc.)
-│   ├── header.h       # Enums for opcodes and cycles, references to procedures from other files
-│   └── instructions.c # Each instruction with its addressing mode (e.g., LDA_IM)
-├── tests/             # Unit tests for each instruction + addressing mode combo
-└── main.c             # Entry point (if applicable)
-```
+# Testing
+Instructions are tested individually along with their addressing modes. For example:
 
-Each instruction is defined in conjunction with its addressing mode. This modular approach allows precise testing and easy extension of the emulator.
-This project structure will change and all the header files will be in the `include/` directory. But this works for now!
+- `LDA_IM`: Load Accumulator, Immediate
 
-# 🧪 Testing Philosophy
+- `STA_ZP`: Store Accumulator, Zero Page
 
-Each instruction and its addressing mode are tested individually — for example:
+Every legal opcode variant will eventually have its own test.
+This fine granularity helps ensure correctness and simplifies debugging.
 
-    LDA_IM — Load accumulator using Immediate addressing
-
-    STA_ZP — Store accumulator using Zero Page addressing
-
-    And so on for each valid opcode variant
-
-This fine-grained approach ensures correctness and easier debugging.
-
-# 🛠 Compiler Compatibility
-
-The emulator relies on compiler-specific behavior to run initialization code automatically:
-
-```C 
-__attribute__((constructor)) void init(void) {
-    // Initialization
+# Compiler Notes
+The emulator uses compiler-specific initialization behavior:
+```C
+__attribute__((constructor)) void init(void)
+{
+    // initialization
 }
 ```
+Supported compilers:
+- GCC
+- Clang
 
-✅ Supported:
-- gcc
-- clang
+# Building and Running
+- Build: `make`
+- Run: `./build/main`(only on Unix-like systems)
+- Run tests: `make vtest`
 
-⚠️ Not supported by some compilers that don’t recognize `__attribute__((constructor))`. If you're not using GCC or Clang, this feature may not work as intended.
+# Contributing
+Areas of interest include:
+- Implementing remaining instructions
+- Improving accuracy
+- Expanding the test suite
+- Refactoring subsystems as the project grows
+- Writing a loader that loads the program into memory
 
-# 🚀 Getting Started
-## Build
-```bash
-make
-```
-## Run
-```bash
-./build/main
-```
-## Run Tests
-Assuming you have the `check` test framework:
-```bash
-make vtest
-```
-# 📚 Contributing
-Contributions are welcome! Whether it's implementing new instructions, improving test coverage, or refactoring code — feel free to open a pull request.
-# 📜 License
-MIT — do whatever you want, but please don’t emulate poorly 😉
+Please send pull requests or open issues if you encounter problems or if you have a great idea.
