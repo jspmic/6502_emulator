@@ -12,10 +12,11 @@ FILE* read_binary(const char* name) {
 
 void print_binary(FILE* fd) {
 	int c;
+	printf("| ");
 	while ((c = fgetc(fd)) != EOF) {
 		printf("%.2X ", c);
 	}
-	printf("\n");
+	printf("|\n");
 }
 
 void load_memory(FILE* fd, Memory* mem, CPU* cpu) {
