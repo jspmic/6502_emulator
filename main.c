@@ -12,8 +12,6 @@ int main(int argc, char** argv){
 	char* name = "./examples/a.o65";
 	FILE* file = read_binary(name);
 	load_memory(file, mem, cpu);
-	FILE* file1 = read_binary(name);
-	print_binary(file1);
 	execute(cpu, mem);
 
 	// Ending code
