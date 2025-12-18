@@ -13,7 +13,8 @@ void free_resource(CPU** cpu, Memory** mem){
 
 /* Resets the CPU and Memory according to 6502 indications */
 void reset(CPU* cpu, Memory* mem){
-	cpu->pc = 0xFFFC;
+	// cpu->pc = 0xFFFC;
+	cpu->pc = 0x0000;
 	cpu->sp = 0x00;
 	cpu->D = 0;
 	cpu->I = 0;
