@@ -69,6 +69,9 @@ enum OPCODES{
 	INS_STA_ABY		= 0x99,		// STA Absolute, Y
 
 	INS_JSR			= 0x20,		// JSR
+	
+	INS_CLC			= 0x18,		// CLC
+	INS_SEC			= 0x38,		// SEC
 };
 
 enum CYCLES{
@@ -91,6 +94,9 @@ enum CYCLES{
 	CCL_ST_INDY		= 6,		// Cycle for the ST<...> Indirect Indexed mode instruction
 
 	CCL_JSR			= 6,		// Cycle for the JSR instruction
+
+	CCL_CLC			= 2,		// Cycle for the CLC instruction
+	CCL_SEC			= 2,		// Cycle for the SEC instruction
 };
 
 typedef void (*f_instruction)(u32*, CPU*, Memory*);

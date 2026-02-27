@@ -141,6 +141,16 @@ void fn_sta_ab(u32 *cycles, CPU* cpu, Memory* mem){
 	ab_st(cycles, cpu, mem, &(cpu->a));
 }
 
+void fn_clc(u32 *cycles, CPU* cpu, Memory* mem){
+	cpu->C = 0x0;
+	(*cycles)--;
+}
+
+void fn_sec(u32 *cycles, CPU* cpu, Memory* mem){
+	cpu->C = 0x1;
+	(*cycles)--;
+}
+
 __attribute__((constructor)) void init(void){
 	manager = (function_manager*) calloc(1, sizeof(function_manager));
 	manager->init = 0x1;
@@ -170,4 +180,7 @@ __attribute__((constructor)) void init(void){
 	subscribe(fn_sta_indX, INS_STA_INDX, CCL_ST_INDX);
 	subscribe(fn_sta_indY, INS_STA_INDY, CCL_ST_INDY);
 	subscribe(fn_sta_ab, INS_STA_AB, CCL_ST_AB);
+
+	subscribe(fn_clc, INS_CLC, CCL_CLC);
+	subscribe(fn_sec, INS_SEC, CCL_SEC);
 }
