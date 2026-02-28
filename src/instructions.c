@@ -151,6 +151,23 @@ void fn_sec(u32 *cycles, CPU* cpu, Memory* mem){
 	(*cycles)--;
 }
 
+void fn_nop(u32 *cycles, CPU* cpu, Memory* mem){
+	cpu->pc++;
+	(*cycles)--;
+}
+
+void fn_iny(u32 *cycles, CPU* cpu, Memory* mem){
+	cpu->y++;
+	LDSet(cpu, REG_Y);
+	(*cycles)--;
+}
+
+void fn_inx(u32 *cycles, CPU* cpu, Memory* mem){
+	cpu->x++;
+	LDSet(cpu, REG_X);
+	(*cycles)--;
+}
+
 __attribute__((constructor)) void init(void){
 	manager = (function_manager*) calloc(1, sizeof(function_manager));
 	manager->init = 0x1;
@@ -183,4 +200,7 @@ __attribute__((constructor)) void init(void){
 
 	subscribe(fn_clc, INS_CLC, CCL_CLC);
 	subscribe(fn_sec, INS_SEC, CCL_SEC);
+	subscribe(fn_nop, INS_NOP, CCL_NOP);
+	subscribe(fn_iny, INS_INY, CCL_INY);
+	subscribe(fn_inx, INS_INX, CCL_INX);
 }

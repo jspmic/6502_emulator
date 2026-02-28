@@ -72,6 +72,9 @@ enum OPCODES{
 	
 	INS_CLC			= 0x18,		// CLC
 	INS_SEC			= 0x38,		// SEC
+	INS_NOP			= 0xEA,		// NOP
+	INS_INY			= 0xC8,		// INY
+	INS_INX			= 0xE8,		// INX
 };
 
 enum CYCLES{
@@ -97,6 +100,9 @@ enum CYCLES{
 
 	CCL_CLC			= 2,		// Cycle for the CLC instruction
 	CCL_SEC			= 2,		// Cycle for the SEC instruction
+	CCL_NOP			= 2,		// Cycle for the NOP instruction
+	CCL_INY			= 2,		// Cycle for the INY instruction
+	CCL_INX			= 2,		// Cycle for the INX instruction
 };
 
 typedef void (*f_instruction)(u32*, CPU*, Memory*);
