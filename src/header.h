@@ -2,6 +2,7 @@
 #define GUARD
 
 #include <stdio.h>
+#include <stdint.h>
 
 #define MEM 1024*64
 #define NO_INSTRUCTIONS 256
@@ -10,9 +11,9 @@
 #define REG_X	88
 #define REG_Y	89
 
-typedef unsigned char Byte;
-typedef unsigned short Word;
-typedef unsigned int u32;
+typedef uint8_t Byte;
+typedef uint16_t Word;
+typedef uint32_t u32;
 
 typedef struct{
 	Word data[MEM];
