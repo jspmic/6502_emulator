@@ -17,11 +17,12 @@ typedef uint32_t u32;
 
 typedef struct{
 	Word data[MEM];
+	Byte init_true: 1;	// Check if memory is initialized
 } Memory;
 
 typedef struct{
 	Word pc;	// Program counter(PC)
-	Byte sp;	// Stack pointer(SP)
+	Byte S;	// Stack pointer(SP)
 
 	Byte a;		// Accumulator
 	Byte x;		// Register X
@@ -37,6 +38,8 @@ typedef struct{
 	Byte B: 1;	// Break command flag
 	Byte O: 1;	// Overflow flag
 	Byte N: 1;	// Negative flag
+
+	Byte init_true: 1;	// Check if cpu is initialized
 } CPU;
 
 enum OPCODES{
