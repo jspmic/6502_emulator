@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdint.h>
 
-#define MEM 1024*64
+#define MEM ((1024*64)-1)
 #define NO_INSTRUCTIONS 256
 
 #define REG_A	65
