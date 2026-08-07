@@ -16,8 +16,8 @@ START_TEST (test_fn_lda_im)
 
 	execute(cpu, mem);
 	ck_assert((cpu->a)==c1);
-	ck_assert((cpu->Z)==0x0);
-	ck_assert((cpu->N)==0x0);
+	ck_assert(get_status(cpu, Z)==0x0);
+	ck_assert(get_status(cpu, N)==0x0);
 
 	free_resource(&cpu, &mem);
 }
@@ -36,8 +36,8 @@ START_TEST (test_fn_lda_im_2)
 
 	execute(cpu, mem);
 	ck_assert((cpu->a)==c2);
-	ck_assert((cpu->Z)==0x0);
-	ck_assert((cpu->N)==0x1);
+	ck_assert(get_status(cpu, Z)==0x0);
+	ck_assert(get_status(cpu, N)==0x1);
 
 	free_resource(&cpu, &mem);
 }
@@ -57,8 +57,8 @@ START_TEST (test_fn_lda_zp)
 
 	execute(cpu, mem);
 	ck_assert((cpu->a)==value);
-	ck_assert((cpu->Z)==0x0);
-	ck_assert((cpu->N)==0x1);
+	ck_assert(get_status(cpu, Z)==0x0);
+	ck_assert(get_status(cpu, N)==0x1);
 
 	free_resource(&cpu, &mem);
 }
@@ -79,8 +79,8 @@ START_TEST (test_fn_lda_zpx)
 
 	execute(cpu, mem);
 	ck_assert((cpu->a)==value);
-	ck_assert((cpu->Z)==0x0);
-	ck_assert((cpu->N)==0x1);
+	ck_assert(get_status(cpu, Z)==0x0);
+	ck_assert(get_status(cpu, N)==0x1);
 
 	free_resource(&cpu, &mem);
 }
@@ -103,8 +103,8 @@ START_TEST (test_fn_lda_ab)
 
 	execute(cpu, mem);
 	ck_assert((cpu->a)==value);
-	ck_assert((cpu->Z)==0x0);
-	ck_assert((cpu->N)==0x1);
+	ck_assert(get_status(cpu, Z)==0x0);
+	ck_assert(get_status(cpu, N)==0x1);
 
 	free_resource(&cpu, &mem);
 }
@@ -125,8 +125,8 @@ START_TEST (test_fn_lda_abx)
 
 	execute(cpu, mem);
 	ck_assert((cpu->a)==value);
-	ck_assert((cpu->Z)==0x0);
-	ck_assert((cpu->N)==0x1);
+	ck_assert(get_status(cpu, Z)==0x0);
+	ck_assert(get_status(cpu, N)==0x1);
 
 	free_resource(&cpu, &mem);
 }
@@ -147,8 +147,8 @@ START_TEST (test_fn_lda_aby)
 
 	execute(cpu, mem);
 	ck_assert((cpu->a)==value);
-	ck_assert((cpu->Z)==0x0);
-	ck_assert((cpu->N)==0x1);
+	ck_assert(get_status(cpu, Z)==0x0);
+	ck_assert(get_status(cpu, N)==0x1);
 
 	free_resource(&cpu, &mem);
 }
@@ -173,8 +173,8 @@ START_TEST (test_fn_lda_indX)
 
 	execute(cpu, mem);
 	ck_assert((cpu->a)==value);
-	ck_assert((cpu->Z)==0x0);
-	ck_assert((cpu->N)==0x1);
+	ck_assert(get_status(cpu, Z)==0x0);
+	ck_assert(get_status(cpu, N)==0x1);
 
 	free_resource(&cpu, &mem);
 }
@@ -199,8 +199,8 @@ START_TEST (test_fn_lda_indY)
 
 	execute(cpu, mem);
 	ck_assert((cpu->a)==value);
-	ck_assert((cpu->Z)==0x0);
-	ck_assert((cpu->N)==0x1);
+	ck_assert(get_status(cpu, Z)==0x0);
+	ck_assert(get_status(cpu, N)==0x1);
 
 	free_resource(&cpu, &mem);
 }
