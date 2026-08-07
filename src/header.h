@@ -6,6 +6,8 @@
 
 #define MEM ((1024*64)-1)
 #define NO_INSTRUCTIONS 256
+#define STACK_MAX 0x0100
+#define STACK_MIN 0x01FF
 
 #define REG_A	65
 #define REG_X	88
