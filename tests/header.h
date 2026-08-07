@@ -8,5 +8,6 @@ Suite* fn_lda_suite (void);
 Suite* fn_ldx_suite (void);
 Suite* fn_ldy_suite (void);
 Suite* fn_sta_suite (void);
+Suite* fn_addr_suite (void);
 
 #endif
