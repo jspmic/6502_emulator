@@ -222,7 +222,7 @@ void ab_st(u32* cycles, CPU* cpu, Memory* mem, Byte* src){
 }
 
 void push_stack(u32* cycles, CPU* cpu, Memory* mem, Byte data){
-	if ( (STACK_MIN+(cpu->S) - 1) < STACK_MAX) {
+	if ( (STACK_MAX+(cpu->S) - 1) < STACK_MAX) {
 		perror("push_stack: stack overflow");
 		return;
 	}
@@ -234,4 +234,21 @@ void push_stack(u32* cycles, CPU* cpu, Memory* mem, Byte data){
 
 	mem->data[stack_addr] = data;
 	(*cycles)--;
+}
+
+void pull_stack(u32* cycles, CPU* cpu, Memory* mem, Byte* dest){
+	if ( (STACK_MAX+(cpu->S) + 1) > STACK_MIN) {
+		perror("pull_stack: memory inaccessible");
+		return;
+	}
+
+	Byte data = mem->data[cpu->S + 1];
+	(*cycles)--;
+
+	cpu->S++;
+	(*cycles)--;
+
+	*dest = data;
+	(*cycles)--; // for derefencing the destination
+	(*cycles)--; // for copying the data to the destination
 }
