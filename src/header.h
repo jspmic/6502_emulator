@@ -145,6 +145,7 @@ void zp_st(u32* cycles, CPU* cpu, Memory* mem, Byte* src);
 void zpx_st(u32* cycles, CPU* cpu, Memory* mem, Byte* src);
 
 void push_stack(u32* cycles, CPU* cpu, Memory* mem, Byte data);
+void pull_stack(u32* cycles, CPU* cpu, Memory* mem, Byte* dest);
 
 // Functions provided by instructions.c
 void init(void);
