@@ -220,3 +220,18 @@ void ab_st(u32* cycles, CPU* cpu, Memory* mem, Byte* src){
 	mem->data[operandW] = *src;
 	(*cycles)--;
 }
+
+void push_stack(u32* cycles, CPU* cpu, Memory* mem, Byte data){
+	if ( (STACK_MIN+(cpu->S) - 1) < STACK_MAX) {
+		perror("push_stack: stack overflow");
+		return;
+	}
+
+	Word stack_addr = STACK_MAX + (cpu->S);
+
+	cpu->S--;
+	(*cycles)--;
+
+	mem->data[stack_addr] = data;
+	(*cycles)--;
+}
