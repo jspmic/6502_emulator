@@ -82,7 +82,10 @@ enum OPCODES{
 	INS_INY			= 0xC8,		// INY
 	INS_INX			= 0xE8,		// INX
 	
-	INS_PHA			= 0x48,		// PHA
+	INS_PHA			= 0x48,		// PHA: Push Accumulator
+	INS_PHP			= 0x08,		// PHP: Push Processor Status
+	INS_PLA			= 0x68,		// PLA: Pull Accumulator
+	INS_PLP			= 0x28,		// PLP: Pull Processor Status
 };
 
 enum CYCLES{
@@ -111,6 +114,9 @@ enum CYCLES{
 	CCL_NOP			= 2,		// Cycle for the NOP instruction
 	CCL_INY			= 2,		// Cycle for the INY instruction
 	CCL_INX			= 2,		// Cycle for the INX instruction
+
+	CCL_PHX			= 3,		// Cycle for the PHX instruction
+	CCL_PLX			= 4,		// Cycle for the PLX instruction
 };
 
 typedef void (*f_instruction)(u32*, CPU*, Memory*);
