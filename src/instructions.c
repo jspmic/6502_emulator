@@ -142,12 +142,14 @@ void fn_sta_ab(u32 *cycles, CPU* cpu, Memory* mem){
 }
 
 void fn_clc(u32 *cycles, CPU* cpu, Memory* mem){
-	cpu->C = 0x0;
+	// cpu->C = 0x0;
+	cpu->status &= (!C);
 	(*cycles)--;
 }
 
 void fn_sec(u32 *cycles, CPU* cpu, Memory* mem){
-	cpu->C = 0x1;
+	// cpu->C = 0x1;
+	cpu->status |= C;
 	(*cycles)--;
 }
 
@@ -166,6 +168,11 @@ void fn_inx(u32 *cycles, CPU* cpu, Memory* mem){
 	cpu->x++;
 	LDSet(cpu, REG_X);
 	(*cycles)--;
+}
+
+void fn_pha(u32 *cycles, CPU* cpu, Memory* mem){
+	(*cycles)--;
+	push_stack(cycles, cpu, mem, cpu->a);
 }
 
 __attribute__((constructor)) void init(void){

@@ -11,6 +11,15 @@
 #define REG_X	88
 #define REG_Y	89
 
+// Processor status flags
+#define C 1<<6
+#define Z 1<<5
+#define I 1<<4
+#define D 1<<3
+#define B 1<<2
+#define O 1<<1
+#define N 1<<0
+
 typedef uint8_t Byte;
 typedef uint16_t Word;
 typedef uint32_t u32;
@@ -28,16 +37,7 @@ typedef struct{
 	Byte x;		// Register X
 	Byte y;		// Register Y
 
-	// These are parts of the Processor status
-	// The processor status is 8-bits long
-	// Each bit is a 1-bit flag
-	Byte C: 1;	// Carry flag
-	Byte Z: 1;	// Zero flag
-	Byte I: 1;	// Interrupt disable flag
-	Byte D: 1;	// Decimal mode flag
-	Byte B: 1;	// Break command flag
-	Byte O: 1;	// Overflow flag
-	Byte N: 1;	// Negative flag
+	Byte status;
 
 	Byte init_true: 1;	// Check if cpu is initialized
 } CPU;
@@ -79,6 +79,8 @@ enum OPCODES{
 	INS_NOP			= 0xEA,		// NOP
 	INS_INY			= 0xC8,		// INY
 	INS_INX			= 0xE8,		// INX
+	
+	INS_PHA			= 0x48,		// PHA
 };
 
 enum CYCLES{
@@ -134,6 +136,8 @@ void indY_st(u32* cycles, CPU* cpu, Memory* mem, Byte* src);
 void zp_st(u32* cycles, CPU* cpu, Memory* mem, Byte* src);
 void zpx_st(u32* cycles, CPU* cpu, Memory* mem, Byte* src);
 
+void push_stack(u32* cycles, CPU* cpu, Memory* mem, Byte data);
+
 // Functions provided by instructions.c
 void init(void);
 void execute_instruction(Byte opcode, u32* cycles, CPU* cpu, Memory* mem);
@@ -151,6 +155,7 @@ void write_word(Word value, u32 addr, u32 *cycles, Memory* mem);
 void execute(CPU* cpu, Memory* mem);
 void free_resource(CPU** cpu, Memory** mem);
 void print_memory(Memory* mem);
+void set_status(CPU* cpu, unsigned int condition, uint8_t flag);
 
 // Functions provided by loader.c
 FILE* read_binary(const char* name);
