@@ -8,13 +8,6 @@ int main(int argc, char** argv){
 	Memory* mem = (Memory*) malloc(sizeof(Memory));
 	reset(cpu, mem);
 
-	// Loader code
-	// File code expected result:
-	// [0x200] <- 0xA1
-	// [0x201] <- 0xF2
-	// [0x202] <- 0xCA
-	// **** tested ****
-
 	char* name = "./examples/a.o65";
 	FILE* file = read_binary(name);
 	load_memory(file, mem, cpu);

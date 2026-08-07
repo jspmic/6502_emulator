@@ -1,6 +1,6 @@
 lda #$0A1
-sta $200
+pha
 lda #$0F2
-sta $201
+pha
 lda #$0CA
-sta $202
+pha
