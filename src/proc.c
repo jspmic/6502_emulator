@@ -85,6 +85,10 @@ void set_status(CPU* cpu, unsigned int condition, uint8_t flag) {
 		cpu->status |= flag;
 }
 
+unsigned int get_status(CPU* cpu, uint8_t flag) {
+	return (cpu->status) & flag;
+}
+
 void LDSet(CPU* cpu, u32 dst){
 	Byte target_reg;
 	switch (dst){

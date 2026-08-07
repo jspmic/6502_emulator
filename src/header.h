@@ -156,6 +156,7 @@ void execute(CPU* cpu, Memory* mem);
 void free_resource(CPU** cpu, Memory** mem);
 void print_memory(Memory* mem);
 void set_status(CPU* cpu, unsigned int condition, uint8_t flag);
+unsigned int get_status(CPU* cpu, uint8_t flag);
 
 // Functions provided by loader.c
 FILE* read_binary(const char* name);
