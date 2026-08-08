@@ -186,6 +186,19 @@ void fn_plp(u32 *cycles, CPU* cpu, Memory* mem){
 	pull_stack(cycles, cpu, mem, &(cpu->status));
 }
 
+void fn_tsx(u32 *cycles, CPU* cpu, Memory* mem){
+	transfer_r2r(cycles, &(cpu->S), &(cpu->x));
+	LDSet(cpu, REG_X);
+}
+
+void fn_txs(u32 *cycles, CPU* cpu, Memory* mem){
+	transfer_r2r(cycles, &(cpu->x), &(cpu->S));
+}
+
+void fn_txa(u32 *cycles, CPU* cpu, Memory* mem){
+	transfer_r2r(cycles, &(cpu->x), &(cpu->a));
+}
+
 __attribute__((constructor)) void init(void){
 	manager = (function_manager*) calloc(1, sizeof(function_manager));
 	manager->init = 0x1;
@@ -226,4 +239,8 @@ __attribute__((constructor)) void init(void){
 	subscribe(fn_php, INS_PHP, CCL_PHX);
 	subscribe(fn_pla, INS_PLA, CCL_PLX);
 	subscribe(fn_plp, INS_PLP, CCL_PLX);
+
+	subscribe(fn_tsx, INS_TSX, CCL_TSX);
+	subscribe(fn_txs, INS_TXS, CCL_TXS);
+	subscribe(fn_txa, INS_TXA, CCL_TXA);
 }

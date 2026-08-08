@@ -252,3 +252,8 @@ void pull_stack(u32* cycles, CPU* cpu, Memory* mem, Byte* dest){
 	(*cycles)--; // for derefencing the destination
 	(*cycles)--; // for copying the data to the destination
 }
+
+void transfer_r2r(u32* cycles, Byte* src, Byte* dest) {
+	*dest = *src;
+	(*cycles)--;
+}

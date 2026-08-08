@@ -86,6 +86,10 @@ enum OPCODES{
 	INS_PHP			= 0x08,		// PHP: Push Processor Status
 	INS_PLA			= 0x68,		// PLA: Pull Accumulator
 	INS_PLP			= 0x28,		// PLP: Pull Processor Status
+
+	INS_TSX			= 0xBA,		// TSX: Transfer Stack Pointer to X
+	INS_TXA			= 0x8A,		// TXA: Transfer X to Accumulator
+	INS_TXS			= 0x9A,		// TXS: Transfer X to Stack Pointer
 };
 
 enum CYCLES{
@@ -117,6 +121,10 @@ enum CYCLES{
 
 	CCL_PHX			= 3,		// Cycle for the PHX instruction
 	CCL_PLX			= 4,		// Cycle for the PLX instruction
+
+	CCL_TSX			= 2,		// Cycle for the TSX instruction
+	CCL_TXA			= 2,		// Cycle for the TXA instruction
+	CCL_TXS			= 2,		// Cycle for the TXS instruction
 };
 
 typedef void (*f_instruction)(u32*, CPU*, Memory*);
@@ -146,6 +154,8 @@ void zpx_st(u32* cycles, CPU* cpu, Memory* mem, Byte* src);
 
 void push_stack(u32* cycles, CPU* cpu, Memory* mem, Byte data);
 void pull_stack(u32* cycles, CPU* cpu, Memory* mem, Byte* dest);
+
+void transfer_r2r(u32* cycles, Byte* src, Byte* dest);
 
 // Functions provided by instructions.c
 void init(void);
