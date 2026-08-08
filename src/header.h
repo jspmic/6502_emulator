@@ -2,40 +2,46 @@
 #define GUARD
 
 #include <stdio.h>
+#include <stdint.h>
 
-#define MEM 1024*64
+#define MEM ((1024*64)-1)
 #define NO_INSTRUCTIONS 256
+#define STACK_MAX 0x0100
+#define STACK_MIN 0x01FF
 
 #define REG_A	65
 #define REG_X	88
 #define REG_Y	89
 
-typedef unsigned char Byte;
-typedef unsigned short Word;
-typedef unsigned int u32;
+// Processor status flags
+#define C 1<<6
+#define Z 1<<5
+#define I 1<<4
+#define D 1<<3
+#define B 1<<2
+#define O 1<<1
+#define N 1<<0
+
+typedef uint8_t Byte;
+typedef uint16_t Word;
+typedef uint32_t u32;
 
 typedef struct{
 	Word data[MEM];
+	Byte init_true: 1;	// Check if memory is initialized
 } Memory;
 
 typedef struct{
 	Word pc;	// Program counter(PC)
-	Byte sp;	// Stack pointer(SP)
+	Byte S;	// Stack pointer(SP)
 
 	Byte a;		// Accumulator
 	Byte x;		// Register X
 	Byte y;		// Register Y
 
-	// These are parts of the Processor status
-	// The processor status is 8-bits long
-	// Each bit is a 1-bit flag
-	Byte C: 1;	// Carry flag
-	Byte Z: 1;	// Zero flag
-	Byte I: 1;	// Interrupt disable flag
-	Byte D: 1;	// Decimal mode flag
-	Byte B: 1;	// Break command flag
-	Byte O: 1;	// Overflow flag
-	Byte N: 1;	// Negative flag
+	Byte status;
+
+	Byte init_true: 1;	// Check if cpu is initialized
 } CPU;
 
 enum OPCODES{
@@ -75,6 +81,15 @@ enum OPCODES{
 	INS_NOP			= 0xEA,		// NOP
 	INS_INY			= 0xC8,		// INY
 	INS_INX			= 0xE8,		// INX
+	
+	INS_PHA			= 0x48,		// PHA: Push Accumulator
+	INS_PHP			= 0x08,		// PHP: Push Processor Status
+	INS_PLA			= 0x68,		// PLA: Pull Accumulator
+	INS_PLP			= 0x28,		// PLP: Pull Processor Status
+
+	INS_TSX			= 0xBA,		// TSX: Transfer Stack Pointer to X
+	INS_TXA			= 0x8A,		// TXA: Transfer X to Accumulator
+	INS_TXS			= 0x9A,		// TXS: Transfer X to Stack Pointer
 };
 
 enum CYCLES{
@@ -103,6 +118,13 @@ enum CYCLES{
 	CCL_NOP			= 2,		// Cycle for the NOP instruction
 	CCL_INY			= 2,		// Cycle for the INY instruction
 	CCL_INX			= 2,		// Cycle for the INX instruction
+
+	CCL_PHX			= 3,		// Cycle for the PHX instruction
+	CCL_PLX			= 4,		// Cycle for the PLX instruction
+
+	CCL_TSX			= 2,		// Cycle for the TSX instruction
+	CCL_TXA			= 2,		// Cycle for the TXA instruction
+	CCL_TXS			= 2,		// Cycle for the TXS instruction
 };
 
 typedef void (*f_instruction)(u32*, CPU*, Memory*);
@@ -130,6 +152,11 @@ void indY_st(u32* cycles, CPU* cpu, Memory* mem, Byte* src);
 void zp_st(u32* cycles, CPU* cpu, Memory* mem, Byte* src);
 void zpx_st(u32* cycles, CPU* cpu, Memory* mem, Byte* src);
 
+void push_stack(u32* cycles, CPU* cpu, Memory* mem, Byte data);
+void pull_stack(u32* cycles, CPU* cpu, Memory* mem, Byte* dest);
+
+void transfer_r2r(u32* cycles, Byte* src, Byte* dest);
+
 // Functions provided by instructions.c
 void init(void);
 void execute_instruction(Byte opcode, u32* cycles, CPU* cpu, Memory* mem);
@@ -147,6 +174,8 @@ void write_word(Word value, u32 addr, u32 *cycles, Memory* mem);
 void execute(CPU* cpu, Memory* mem);
 void free_resource(CPU** cpu, Memory** mem);
 void print_memory(Memory* mem);
+void set_status(CPU* cpu, unsigned int condition, uint8_t flag);
+unsigned int get_status(CPU* cpu, uint8_t flag);
 
 // Functions provided by loader.c
 FILE* read_binary(const char* name);

@@ -8,7 +8,6 @@ int main(int argc, char** argv){
 	Memory* mem = (Memory*) malloc(sizeof(Memory));
 	reset(cpu, mem);
 
-	// Loader code
 	char* name = "./examples/a.o65";
 	FILE* file = read_binary(name);
 	load_memory(file, mem, cpu);

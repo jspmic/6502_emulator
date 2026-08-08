@@ -142,12 +142,14 @@ void fn_sta_ab(u32 *cycles, CPU* cpu, Memory* mem){
 }
 
 void fn_clc(u32 *cycles, CPU* cpu, Memory* mem){
-	cpu->C = 0x0;
+	// cpu->C = 0x0;
+	cpu->status &= (!C);
 	(*cycles)--;
 }
 
 void fn_sec(u32 *cycles, CPU* cpu, Memory* mem){
-	cpu->C = 0x1;
+	// cpu->C = 0x1;
+	cpu->status |= C;
 	(*cycles)--;
 }
 
@@ -166,6 +168,37 @@ void fn_inx(u32 *cycles, CPU* cpu, Memory* mem){
 	cpu->x++;
 	LDSet(cpu, REG_X);
 	(*cycles)--;
+}
+
+void fn_pha(u32 *cycles, CPU* cpu, Memory* mem){
+	push_stack(cycles, cpu, mem, cpu->a);
+}
+
+void fn_php(u32 *cycles, CPU* cpu, Memory* mem){
+	push_stack(cycles, cpu, mem, cpu->status);
+}
+
+void fn_pla(u32 *cycles, CPU* cpu, Memory* mem){
+	pull_stack(cycles, cpu, mem, &(cpu->a));
+	LDSet(cpu, REG_A);
+}
+
+// Still in maintainance
+void fn_plp(u32 *cycles, CPU* cpu, Memory* mem){
+	pull_stack(cycles, cpu, mem, &(cpu->status));
+}
+
+void fn_tsx(u32 *cycles, CPU* cpu, Memory* mem){
+	transfer_r2r(cycles, &(cpu->S), &(cpu->x));
+	LDSet(cpu, REG_X);
+}
+
+void fn_txs(u32 *cycles, CPU* cpu, Memory* mem){
+	transfer_r2r(cycles, &(cpu->x), &(cpu->S));
+}
+
+void fn_txa(u32 *cycles, CPU* cpu, Memory* mem){
+	transfer_r2r(cycles, &(cpu->x), &(cpu->a));
 }
 
 __attribute__((constructor)) void init(void){
@@ -203,4 +236,13 @@ __attribute__((constructor)) void init(void){
 	subscribe(fn_nop, INS_NOP, CCL_NOP);
 	subscribe(fn_iny, INS_INY, CCL_INY);
 	subscribe(fn_inx, INS_INX, CCL_INX);
+
+	subscribe(fn_pha, INS_PHA, CCL_PHX);
+	subscribe(fn_php, INS_PHP, CCL_PHX);
+	subscribe(fn_pla, INS_PLA, CCL_PLX);
+	subscribe(fn_plp, INS_PLP, CCL_PLX);
+
+	subscribe(fn_tsx, INS_TSX, CCL_TSX);
+	subscribe(fn_txs, INS_TXS, CCL_TXS);
+	subscribe(fn_txa, INS_TXA, CCL_TXA);
 }

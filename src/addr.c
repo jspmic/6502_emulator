@@ -220,3 +220,40 @@ void ab_st(u32* cycles, CPU* cpu, Memory* mem, Byte* src){
 	mem->data[operandW] = *src;
 	(*cycles)--;
 }
+
+void push_stack(u32* cycles, CPU* cpu, Memory* mem, Byte data){
+	if ( (STACK_MAX+(cpu->S) - 1) < STACK_MAX) {
+		perror("push_stack: stack overflow");
+		return;
+	}
+
+	Word stack_addr = STACK_MAX + (cpu->S);
+
+	cpu->S--;
+	(*cycles)--;
+
+	mem->data[stack_addr] = data;
+	(*cycles)--;
+}
+
+void pull_stack(u32* cycles, CPU* cpu, Memory* mem, Byte* dest){
+	if ( (STACK_MAX+(cpu->S) + 1) > STACK_MIN) {
+		perror("pull_stack: memory inaccessible");
+		return;
+	}
+
+	Byte data = mem->data[cpu->S + 1];
+	(*cycles)--;
+
+	cpu->S++;
+	(*cycles)--;
+
+	*dest = data;
+	(*cycles)--; // for derefencing the destination
+	(*cycles)--; // for copying the data to the destination
+}
+
+void transfer_r2r(u32* cycles, Byte* src, Byte* dest) {
+	*dest = *src;
+	(*cycles)--;
+}

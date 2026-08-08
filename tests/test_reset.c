@@ -17,9 +17,9 @@ START_TEST (test_reset)
 	Memory* mem = malloc(sizeof(Memory));
 	reset(cpu, mem);
 	// ck_assert((cpu->pc) == 0xFFFC);
-	ck_assert((cpu->sp) == 0x00);
-	ck_assert((cpu->D) == 0);
-	ck_assert((cpu->I) == 0);
+	ck_assert((cpu->S) == 0xFF);
+	ck_assert(((cpu->status) & D) == 0);
+	ck_assert(((cpu->status) & I) == 0);
 	ck_assert_msg(test_memory_reset(mem),
 			"Memory is not properly reset");
 

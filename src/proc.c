@@ -1,3 +1,4 @@
+#include <stdint.h>
 #include <stdio.h>
 #include <memory.h>
 #include <assert.h>
@@ -13,11 +14,12 @@ void free_resource(CPU** cpu, Memory** mem){
 
 /* Resets the CPU and Memory according to 6502 indications */
 void reset(CPU* cpu, Memory* mem){
-	// cpu->pc = 0xFFFC;
-	cpu->pc = 0x0000;
-	cpu->sp = 0x00;
-	cpu->D = 0;
-	cpu->I = 0;
+	cpu->pc = 0x0200;
+	cpu->S = 0xFF;
+	cpu->status = 0x0;
+
+	cpu->init_true = 1;
+	mem->init_true = 1;
 	memset(mem->data, 0, sizeof(mem->data));
 }
 
@@ -78,6 +80,15 @@ Byte read_without_pc(u32 *cycles, Word address, Memory* mem){
 	return data;
 }
 
+void set_status(CPU* cpu, unsigned int condition, uint8_t flag) {
+	if (condition)
+		cpu->status |= flag;
+}
+
+unsigned int get_status(CPU* cpu, uint8_t flag) {
+	return (cpu->status) & flag;
+}
+
 void LDSet(CPU* cpu, u32 dst){
 	Byte target_reg;
 	switch (dst){
@@ -94,8 +105,10 @@ void LDSet(CPU* cpu, u32 dst){
 			perror("LDSet");
 			return;
 	}
-	cpu->Z = (target_reg) == 0;
-	cpu->N = ((target_reg) & 0x40) > 0;
+	// cpu->status |= (target_reg) == 0 ? Z : 0;
+	// cpu->status |= target_reg & (1<<6) ? N : 0;
+	set_status(cpu, target_reg == 0, Z);
+	set_status(cpu, target_reg & (1<<6), N);
 }
 
 void execute(CPU* cpu, Memory* mem){

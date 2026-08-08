@@ -16,8 +16,8 @@ START_TEST (test_fn_ldx_im)
 
 	execute(cpu, mem);
 	ck_assert((cpu->x)==c1);
-	ck_assert((cpu->Z)==0x0);
-	ck_assert((cpu->N)==0x0);
+	ck_assert(get_status(cpu, Z)==0x0);
+	ck_assert(get_status(cpu, N)==0x0);
 
 	free_resource(&cpu, &mem);
 }
@@ -35,8 +35,8 @@ START_TEST (test_fn_ldx_im_2)
 
 	execute(cpu, mem);
 	ck_assert((cpu->x)==c2);
-	ck_assert((cpu->Z)==0x0);
-	ck_assert((cpu->N)==0x1);
+	ck_assert(get_status(cpu, Z)==0x0);
+	ck_assert(get_status(cpu, N)==0x1);
 
 	free_resource(&cpu, &mem);
 }
@@ -56,8 +56,8 @@ START_TEST (test_fn_ldx_zp)
 
 	execute(cpu, mem);
 	ck_assert((cpu->x)==value);
-	ck_assert((cpu->Z)==0x0);
-	ck_assert((cpu->N)==0x1);
+	ck_assert(get_status(cpu, Z)==0x0);
+	ck_assert(get_status(cpu, N)==0x1);
 
 	free_resource(&cpu, &mem);
 }
@@ -78,8 +78,8 @@ START_TEST (test_fn_ldx_zpy)
 
 	execute(cpu, mem);
 	ck_assert((cpu->x)==value);
-	ck_assert((cpu->Z)==0x0);
-	ck_assert((cpu->N)==0x1);
+	ck_assert(get_status(cpu, Z)==0x0);
+	ck_assert(get_status(cpu, N)==0x1);
 
 	free_resource(&cpu, &mem);
 }
@@ -99,8 +99,8 @@ START_TEST (test_fn_ldx_ab)
 
 	execute(cpu, mem);
 	ck_assert((cpu->x)==value);
-	ck_assert((cpu->Z)==0x0);
-	ck_assert((cpu->N)==0x1);
+	ck_assert(get_status(cpu, Z)==0x0);
+	ck_assert(get_status(cpu, N)==0x1);
 
 	free_resource(&cpu, &mem);
 }
@@ -121,8 +121,8 @@ START_TEST (test_fn_ldx_aby)
 
 	execute(cpu, mem);
 	ck_assert((cpu->x)==value);
-	ck_assert((cpu->Z)==0x0);
-	ck_assert((cpu->N)==0x1);
+	ck_assert(get_status(cpu, Z)==0x0);
+	ck_assert(get_status(cpu, N)==0x1);
 
 	free_resource(&cpu, &mem);
 }
