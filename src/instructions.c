@@ -180,8 +180,10 @@ void fn_php(u32 *cycles, CPU* cpu, Memory* mem){
 
 void fn_pla(u32 *cycles, CPU* cpu, Memory* mem){
 	pull_stack(cycles, cpu, mem, &(cpu->a));
+	LDSet(cpu, REG_A);
 }
 
+// Still in maintainance
 void fn_plp(u32 *cycles, CPU* cpu, Memory* mem){
 	pull_stack(cycles, cpu, mem, &(cpu->status));
 }
