@@ -1,6 +1,8 @@
-lda #$0A1
+; program to load a value from the stack without using PL.. instructions
+; this program only will terminate with the Y register containing the
+; value that was pushed onto the stack
+tsx
+lda #$A1
 pha
-lda #$0F2
-pha
-lda #$0CA
-pha
+
+ldy $0100,X
