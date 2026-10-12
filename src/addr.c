@@ -221,11 +221,11 @@ void ab_st(u32* cycles, CPU* cpu, Memory* mem, Byte* src){
 	(*cycles)--;
 }
 
-void push_stack(u32* cycles, CPU* cpu, Memory* mem, Byte data){
-	if ( (STACK_MAX+(cpu->S) - 1) < STACK_MAX) {
-		perror("push_stack: stack overflow");
-		return;
-	}
+void push(u32* cycles, CPU* cpu, Memory* mem, Byte data){
+	// if ( (STACK_MAX+(cpu->S) - 1) < STACK_MAX) {
+	// 	perror("push_stack: stack overflow");
+	// 	return;
+	// }
 
 	Word stack_addr = STACK_MAX + (cpu->S);
 
@@ -236,11 +236,11 @@ void push_stack(u32* cycles, CPU* cpu, Memory* mem, Byte data){
 	(*cycles)--;
 }
 
-void pull_stack(u32* cycles, CPU* cpu, Memory* mem, Byte* dest){
-	if ( (STACK_MAX+(cpu->S) + 1) > STACK_MIN) {
-		perror("pull_stack: memory inaccessible");
-		return;
-	}
+void pull(u32* cycles, CPU* cpu, Memory* mem, Byte* dest){
+	// if ( (STACK_MAX+(cpu->S) + 1) > STACK_MIN) {
+	// 	perror("pull_stack: memory inaccessible");
+	// 	return;
+	// }
 
 	Byte data = mem->data[cpu->S + 1];
 	(*cycles)--;
